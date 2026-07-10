@@ -3,11 +3,15 @@ import type { Article, Project } from '@portfolio/shared';
 import { getBiography } from '$lib/api/biography.js';
 import { listProjects } from '$lib/api/projects.js';
 import { listArticles } from '$lib/api/articles.js';
-import { listTimelineEvents } from '$lib/api/timeline.js';
-import { listPublications } from '$lib/api/publications.js';
 
 const FETCH_LIMIT = 50;
 
+/**
+ * The homepage only ever renders the hero, featured projects, and featured
+ * articles — Timeline preview / Publications preview sections were removed
+ * from the homepage template, so they're never fetched here even if still
+ * configured/enabled in Settings.homepageSections.
+ */
 export const load: PageServerLoad = async ({ parent }) => {
   const { settings } = await parent();
   const sections = [...settings.homepageSections]
@@ -19,7 +23,7 @@ export const load: PageServerLoad = async ({ parent }) => {
 
   const needs = (type: string) => sections.some((section) => section.type === type);
 
-  const [biography, projectsResult, articlesResult, timelineEvents, publications] = await Promise.all([
+  const [biography, projectsResult, articlesResult] = await Promise.all([
     needs('hero') ? getBiography() : Promise.resolve(null),
     needs('featuredProjects')
       ? listProjects({ limit: FETCH_LIMIT })
@@ -27,12 +31,9 @@ export const load: PageServerLoad = async ({ parent }) => {
     needs('featuredArticles')
       ? listArticles({ limit: FETCH_LIMIT })
       : Promise.resolve({ items: [] as Article[], meta: null }),
-    needs('timelinePreview') ? listTimelineEvents() : Promise.resolve([]),
-    needs('publicationsPreview') ? listPublications() : Promise.resolve([]),
   ]);
 
   return {
-    sections,
     biography,
     featuredProjects: projectsResult.items
       .filter((project) => project.featured)
@@ -40,10 +41,5 @@ export const load: PageServerLoad = async ({ parent }) => {
     featuredArticles: articlesResult.items
       .filter((article) => article.featured)
       .slice(0, sectionLimit('featuredArticles', 3)),
-    timelineEvents: timelineEvents
-      .slice()
-      .reverse()
-      .slice(0, sectionLimit('timelinePreview', 5)),
-    publications: publications.slice(0, sectionLimit('publicationsPreview', 2)),
   };
 };

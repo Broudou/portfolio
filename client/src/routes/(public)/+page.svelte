@@ -2,10 +2,7 @@
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
   import ProjectCard from '$lib/components/content/ProjectCard.svelte';
-  import ArticleCard from '$lib/components/content/ArticleCard.svelte';
-  import TimelineItem from '$lib/components/content/TimelineItem.svelte';
-  import PublicationItem from '$lib/components/content/PublicationItem.svelte';
-  import Button from '$lib/components/ui/Button.svelte';
+  import ArticleListItem from '$lib/components/content/ArticleListItem.svelte';
   import { populated } from '$lib/utils/populated.js';
   import { resolveSeo } from '$lib/utils/seo.js';
   import { personJsonLd } from '$lib/utils/jsonld.js';
@@ -42,10 +39,6 @@
       <h1>{data.biography.fullName}</h1>
       <p class="headline">{data.biography.headline}</p>
       <p class="summary">{data.biography.summary}</p>
-      <div class="cta">
-        <Button href="/projects">View projects</Button>
-        <Button href="/contact" variant="secondary">Get in touch</Button>
-      </div>
     </div>
   </section>
 {/if}
@@ -70,37 +63,11 @@
       <h2>Latest writing</h2>
       <a href="/articles">All articles →</a>
     </div>
-    <div class="grid">
+    <div class="article-list">
       {#each data.featuredArticles as article (article.id)}
-        <ArticleCard {article} />
+        <ArticleListItem {article} />
       {/each}
     </div>
-  </section>
-{/if}
-
-{#if data.timelineEvents.length > 0}
-  <section class="container section">
-    <div class="section-heading">
-      <h2>Recent timeline</h2>
-      <a href="/timeline">Full timeline →</a>
-    </div>
-    <ul class="timeline-list">
-      {#each data.timelineEvents as event (event.id)}
-        <TimelineItem {event} />
-      {/each}
-    </ul>
-  </section>
-{/if}
-
-{#if data.publications.length > 0}
-  <section class="container section pastel">
-    <div class="section-heading">
-      <h2>Talks & publications</h2>
-      <a href="/publications">All publications →</a>
-    </div>
-    {#each data.publications as publication (publication.id)}
-      <PublicationItem {publication} />
-    {/each}
   </section>
 {/if}
 
@@ -137,12 +104,7 @@
 
   .summary {
     max-width: 60ch;
-    margin-bottom: var(--space-5);
-  }
-
-  .cta {
-    display: flex;
-    gap: var(--space-3);
+    margin-bottom: 0;
   }
 
   .section {
@@ -173,10 +135,7 @@
     gap: var(--space-5);
   }
 
-  .timeline-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .article-list {
     max-width: var(--prose-max-width);
   }
 
@@ -188,10 +147,6 @@
 
     .avatar {
       margin-inline: auto;
-    }
-
-    .cta {
-      justify-content: center;
     }
   }
 </style>
