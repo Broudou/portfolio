@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
-  import ProjectCard from '$lib/components/content/ProjectCard.svelte';
+  import ProjectListItem from '$lib/components/content/ProjectListItem.svelte';
   import ArticleListItem from '$lib/components/content/ArticleListItem.svelte';
   import { populated } from '$lib/utils/populated.js';
   import { resolveSeo } from '$lib/utils/seo.js';
@@ -49,9 +49,9 @@
       <h2>Featured projects</h2>
       <a href="/projects">All projects →</a>
     </div>
-    <div class="grid">
+    <div class="list">
       {#each data.featuredProjects as project (project.id)}
-        <ProjectCard {project} />
+        <ProjectListItem {project} />
       {/each}
     </div>
   </section>
@@ -63,7 +63,7 @@
       <h2>Latest writing</h2>
       <a href="/articles">All articles →</a>
     </div>
-    <div class="article-list">
+    <div class="list">
       {#each data.featuredArticles as article (article.id)}
         <ArticleListItem {article} />
       {/each}
@@ -129,13 +129,7 @@
     text-decoration: none;
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--space-5);
-  }
-
-  .article-list {
+  .list {
     max-width: var(--prose-max-width);
   }
 
