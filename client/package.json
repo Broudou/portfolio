@@ -1,0 +1,36 @@
+{
+  "name": "@portfolio/client",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SvelteKit 2 + Vite 5 frontend (public showcase + admin panel) for the portfolio site.",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "node build/index.js",
+    "preview": "vite preview",
+    "typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@portfolio/shared": "*",
+    "jsonwebtoken": "^9.0.2",
+    "rehype-highlight": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "^5.2.2",
+    "@sveltejs/kit": "^2.12.0",
+    "@sveltejs/vite-plugin-svelte": "^4.0.0",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.15",
+    "svelte": "^5.1.0",
+    "svelte-check": "^4.0.5",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  }
+}

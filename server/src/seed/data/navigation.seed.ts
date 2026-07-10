@@ -1,0 +1,22 @@
+import { NavigationItem } from '../../models/index.js';
+
+const ITEMS = [
+  { label: 'Home', path: '/', order: 0 },
+  { label: 'Biography', path: '/biography', order: 1 },
+  { label: 'Projects', path: '/projects', order: 2 },
+  { label: 'Articles', path: '/articles', order: 3 },
+  { label: 'Publications', path: '/publications', order: 4 },
+  { label: 'Timeline', path: '/timeline', order: 5 },
+  { label: 'Contact', path: '/contact', order: 6 },
+];
+
+export async function seedNavigation(): Promise<void> {
+  await NavigationItem.insertMany(
+    ITEMS.map((item) => ({
+      ...item,
+      isExternal: false,
+      isVisible: true,
+      openInNewTab: false,
+    })),
+  );
+}

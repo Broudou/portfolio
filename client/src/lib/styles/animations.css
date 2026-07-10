@@ -1,0 +1,38 @@
+/* Small, reusable motion primitives — all guarded by tokens.css's prefers-reduced-motion override (durations collapse to 0ms). */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-slow) var(--easing-standard) both;
+}
+
+.animate-rise-in {
+  animation: rise-in var(--duration-slow) var(--easing-standard) both;
+}
+
+.transition-base {
+  transition:
+    color var(--duration-base) var(--easing-standard),
+    background-color var(--duration-base) var(--easing-standard),
+    border-color var(--duration-base) var(--easing-standard),
+    box-shadow var(--duration-base) var(--easing-standard),
+    transform var(--duration-base) var(--easing-standard);
+}
