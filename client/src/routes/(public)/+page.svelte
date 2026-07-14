@@ -31,14 +31,17 @@
 
 {#if data.biography}
   <section class="hero container">
-    {#if avatar}
-      <img src={avatar.url} alt={avatar.altText} class="avatar" width="96" height="96" />
-    {/if}
-    <div>
-      <p class="eyebrow">{data.settings.tagline}</p>
-      <h1>{data.biography.fullName}</h1>
-      <p class="headline">{data.biography.headline}</p>
-      <p class="summary">{data.biography.summary}</p>
+    <div class="hero-inner">
+      {#if avatar}
+        <img src={avatar.url} alt={avatar.altText} class="avatar" width="96" height="96" />
+      {:else}
+        <div class="avatar avatar-placeholder" aria-hidden="true"></div>
+      {/if}
+      <div class="hero-text">
+        <h1>{data.biography.fullName}</h1>
+        <p class="headline">{data.biography.headline}</p>
+        <p class="summary">{data.biography.summary}</p>
+      </div>
     </div>
   </section>
 {/if}
@@ -65,27 +68,32 @@
 
 <style>
   .hero {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-4);
-    align-items: center;
+    display: flex;
+    justify-content: center;
     padding-block: var(--space-6);
   }
 
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
   .avatar {
+    flex-shrink: 0;
     width: 96px;
     height: 96px;
     border-radius: var(--radius-full);
     object-fit: cover;
   }
 
-  .eyebrow {
-    color: var(--color-accent);
-    font-weight: var(--font-weight-medium);
-    font-size: var(--font-size-sm);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--space-1);
+  .avatar-placeholder {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+  }
+
+  .hero-text {
+    text-align: left;
   }
 
   .hero h1 {
@@ -118,13 +126,13 @@
   }
 
   @media (max-width: 640px) {
-    .hero {
-      grid-template-columns: 1fr;
+    .hero-inner {
+      flex-direction: column;
       text-align: center;
     }
 
-    .avatar {
-      margin-inline: auto;
+    .hero-text {
+      text-align: center;
     }
   }
 </style>

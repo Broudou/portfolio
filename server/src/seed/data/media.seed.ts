@@ -26,7 +26,6 @@ const SPECS: PlaceholderSpec[] = [
   { key: 'article-typed-apis', label: 'Typed APIs', background: '#F0FDF4', accent: '#1C1917', altText: 'Cover image for the article on end-to-end type safety' },
   { key: 'article-database-indexing', label: 'Database Indexing', background: '#FFFBEB', accent: '#1C1917', altText: 'Cover image for the article on database indexing' },
   { key: 'article-svelte-ssr', label: 'SvelteKit SSR', background: '#FFF1F2', accent: '#1C1917', altText: 'Cover image for the article on SvelteKit rendering' },
-  { key: 'publication-conf-2023', label: 'Conference Talk', background: '#F5F3FF', accent: '#C2410C', altText: 'Cover image for a conference talk' },
 ];
 
 export interface SeededMedia {

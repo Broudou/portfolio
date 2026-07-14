@@ -18,5 +18,4 @@ export * from './schemas/media.schema.js';
 export * from './schemas/navigation.schema.js';
 export * from './schemas/setting.schema.js';
 export * from './schemas/timelineEvent.schema.js';
-export * from './schemas/publication.schema.js';
 export * from './schemas/contactMessage.schema.js';

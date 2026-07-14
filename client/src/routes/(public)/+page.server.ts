@@ -8,9 +8,8 @@ const FETCH_LIMIT = 50;
 
 /**
  * The homepage only ever renders the hero, featured projects, and featured
- * articles — Timeline preview / Publications preview sections were removed
- * from the homepage template, so they're never fetched here even if still
- * configured/enabled in Settings.homepageSections.
+ * articles, so nothing else is fetched here even if other section types are
+ * still configured/enabled in Settings.homepageSections.
  */
 export const load: PageServerLoad = async ({ parent }) => {
   const { settings } = await parent();

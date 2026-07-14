@@ -29,7 +29,6 @@
     featuredProjects: 'Featured projects',
     featuredArticles: 'Featured articles',
     timelinePreview: 'Timeline preview',
-    publicationsPreview: 'Publications preview',
   };
 
   function socialUrl(platform: string): string {

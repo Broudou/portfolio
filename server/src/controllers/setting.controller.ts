@@ -17,7 +17,6 @@ export const SETTINGS_DEFAULTS: Partial<SettingDocument> = {
     { type: 'featuredProjects', enabled: true, order: 1, limit: 3 },
     { type: 'featuredArticles', enabled: true, order: 2, limit: 3 },
     { type: 'timelinePreview', enabled: true, order: 3, limit: 5 },
-    { type: 'publicationsPreview', enabled: true, order: 4, limit: 2 },
   ],
 };
 

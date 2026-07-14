@@ -9,7 +9,6 @@ import {
   Media,
   NavigationItem,
   Project,
-  Publication,
   Setting,
   Tag,
   TimelineEvent,
@@ -24,7 +23,6 @@ import { seedProjects } from './data/projects.seed.js';
 import { seedArticles } from './data/articles.seed.js';
 import { seedNavigation } from './data/navigation.seed.js';
 import { seedTimeline } from './data/timeline.seed.js';
-import { seedPublications } from './data/publications.seed.js';
 import { seedSettings } from './data/settings.seed.js';
 import { seedContactMessages } from './data/contactMessages.seed.js';
 
@@ -39,7 +37,6 @@ const ALL_MODELS = [
   NavigationItem,
   Setting,
   TimelineEvent,
-  Publication,
   ContactMessage,
 ];
 
@@ -74,7 +71,6 @@ export async function runSeed({ force = false }: { force?: boolean } = {}): Prom
   await seedArticles({ authorId: admin.id, categories, tags, media });
   await seedNavigation();
   await seedTimeline();
-  await seedPublications({ coverImageId: media['publication-conf-2023'].id });
   await seedSettings({ ogImageId: media['og-default'].id });
   await seedContactMessages();
 

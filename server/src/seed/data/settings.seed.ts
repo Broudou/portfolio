@@ -21,7 +21,7 @@ export async function seedSettings({ ogImageId }: SeedContext): Promise<void> {
     seoDefaults: {
       title: 'John Doe — Senior Software Engineer',
       description:
-        'Personal showcase of John Doe: projects, technical articles, publications, and career timeline.',
+        'Personal showcase of John Doe: projects, technical articles, and career timeline.',
       ogImage: ogImageId,
       twitterHandle: '@johndoe',
     },
@@ -30,7 +30,6 @@ export async function seedSettings({ ogImageId }: SeedContext): Promise<void> {
       { type: 'featuredProjects', enabled: true, order: 1, limit: 3 },
       { type: 'featuredArticles', enabled: true, order: 2, limit: 3 },
       { type: 'timelinePreview', enabled: true, order: 3, limit: 5 },
-      { type: 'publicationsPreview', enabled: true, order: 4, limit: 2 },
     ],
   });
 }

@@ -2,7 +2,7 @@ import type { RequestHandler } from './$types.js';
 import { listProjects } from '$lib/api/projects.js';
 import { listArticles } from '$lib/api/articles.js';
 
-const STATIC_PATHS = ['/', '/biography', '/projects', '/articles', '/publications', '/timeline', '/contact'];
+const STATIC_PATHS = ['/', '/biography', '/projects', '/articles', '/timeline', '/contact'];
 
 export const GET: RequestHandler = async ({ url }) => {
   const siteUrl = url.origin;

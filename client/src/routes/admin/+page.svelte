@@ -15,7 +15,6 @@
     { label: 'Categories', value: data.counts.categories, href: '/admin/categories' },
     { label: 'Tags', value: data.counts.tags, href: '/admin/tags' },
     { label: 'Timeline events', value: data.counts.timeline, href: '/admin/timeline' },
-    { label: 'Publications', value: data.counts.publications, href: '/admin/publications' },
     { label: 'Unread messages', value: data.counts.unreadMessages, href: '/admin/messages' },
   ]);
 </script>

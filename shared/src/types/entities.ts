@@ -12,7 +12,6 @@ import type {
   CategoryAppliesTo,
   ContentStatus,
   HomepageSectionType,
-  PublicationType,
   Role,
   SocialPlatform,
   TimelineEventType,
@@ -162,18 +161,6 @@ export interface TimelineEvent extends BaseEntity {
   endDate?: string | null;
   type: TimelineEventType;
   link?: string;
-}
-
-export interface Publication extends BaseEntity {
-  title: string;
-  type: PublicationType;
-  venue: string;
-  url?: string;
-  date: string;
-  description?: string;
-  coAuthors: string[];
-  slidesUrl?: string;
-  coverImage?: Media | string | null;
 }
 
 export interface ContactMessage extends BaseEntity {

@@ -13,9 +13,6 @@ export type ContentStatus = (typeof CONTENT_STATUSES)[number];
 export const CATEGORY_APPLIES_TO = ['project', 'article', 'both'] as const;
 export type CategoryAppliesTo = (typeof CATEGORY_APPLIES_TO)[number];
 
-export const PUBLICATION_TYPES = ['talk', 'publication', 'podcast', 'workshop'] as const;
-export type PublicationType = (typeof PUBLICATION_TYPES)[number];
-
 export const TIMELINE_EVENT_TYPES = [
   'education',
   'work',
@@ -30,7 +27,6 @@ export const HOMEPAGE_SECTION_TYPES = [
   'featuredProjects',
   'featuredArticles',
   'timelinePreview',
-  'publicationsPreview',
 ] as const;
 export type HomepageSectionType = (typeof HOMEPAGE_SECTION_TYPES)[number];
 

@@ -1,9 +1,9 @@
 # Personal Professional Showcase Website
 
 A production-ready personal showcase site for a software engineer — biography, projects,
-technical articles, publications/talks, a career timeline, and contact — with every piece
-of content editable from a secure admin panel. No CMS, no page-builder: a small, well-typed
-monorepo with a clear boundary between frontend, backend, database, and shared contracts.
+technical articles, a career timeline, and contact — with every piece of content editable
+from a secure admin panel. No CMS, no page-builder: a small, well-typed monorepo with a
+clear boundary between frontend, backend, database, and shared contracts.
 
 Seeded out of the box with a complete "John Doe" example so the site is immediately
 browsable and the admin panel immediately usable.
@@ -55,9 +55,9 @@ Three decisions shape everything else in this codebase:
 
 ### Content model
 
-Twelve MongoDB collections, each with a Mongoose model in `server/src/models/`:
+Eleven MongoDB collections, each with a Mongoose model in `server/src/models/`:
 `User`, `Biography` (singleton), `Project`, `Article`, `Category`, `Tag`, `Media`,
-`NavigationItem`, `Setting` (singleton), `TimelineEvent`, `Publication`, `ContactMessage`.
+`NavigationItem`, `Setting` (singleton), `TimelineEvent`, `ContactMessage`.
 
 `Biography` and `Setting` are **singletons** — enforced by a unique, immutable
 `singletonKey: 'main'` field plus a `getOrCreate`/`update` service
@@ -163,10 +163,10 @@ node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 
 On every server boot (`server/src/index.ts`), the app checks whether a `Setting` document
 already exists. If not, it seeds every collection with a complete "John Doe" example: one
-admin user, a full biography, 4 categories, 10 tags, ~12 placeholder images (generated as
-SVGs at seed time — no binary assets committed to the repo), 5 projects, 4 articles, 7 nav
-items, a 10-event timeline, 3 publications/talks, site settings, and 2 sample contact
-messages. Seeding is idempotent — it's a no-op on every subsequent boot.
+admin user, a full biography, 4 categories, 10 tags, ~11 placeholder images (generated as
+SVGs at seed time — no binary assets committed to the repo), 5 projects, 4 articles, 6 nav
+items, a 10-event timeline, site settings, and 2 sample contact messages. Seeding is
+idempotent — it's a no-op on every subsequent boot.
 
 The seeded admin login is:
 

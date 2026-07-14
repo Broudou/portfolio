@@ -16,7 +16,6 @@
     { label: 'Media', path: '/admin/media' },
     { label: 'Navigation', path: '/admin/navigation' },
     { label: 'Timeline', path: '/admin/timeline' },
-    { label: 'Publications', path: '/admin/publications' },
     { label: 'Settings', path: '/admin/settings' },
     { label: 'Messages', path: '/admin/messages' },
   ];
