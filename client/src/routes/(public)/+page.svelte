@@ -69,7 +69,7 @@
 
   .section-title {
     font-size: var(--font-size-xl);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
   }
 
   .list {

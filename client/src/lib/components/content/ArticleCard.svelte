@@ -59,7 +59,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--space-3) var(--space-5);
+    padding: var(--space-2) var(--space-4);
   }
 
   .image-pane {
@@ -86,21 +86,22 @@
   }
 
   .meta {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
     margin-bottom: var(--space-1);
   }
 
   h3 {
     margin-bottom: var(--space-1);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
   }
 
   .excerpt {
     color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
     margin: 0;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
