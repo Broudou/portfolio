@@ -33,7 +33,7 @@
 <style>
   .card {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     overflow: hidden;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -65,7 +65,10 @@
   .image-pane {
     position: relative;
     flex: 0 0 50%;
+    aspect-ratio: 16 / 7;
+    margin-block: var(--space-3);
     overflow: hidden;
+    border-radius: var(--radius-md);
   }
 
   .cover {
