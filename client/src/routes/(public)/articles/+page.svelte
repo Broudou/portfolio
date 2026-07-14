@@ -32,11 +32,6 @@
 <SeoHead title={seo.title} description={seo.description} canonicalUrl={seo.canonicalUrl} ogImageUrl={seo.ogImageUrl} />
 
 <div class="container page">
-  <header class="page-header">
-    <h1>Articles</h1>
-    <p>Notes on distributed systems, API design, and the occasional postmortem lesson.</p>
-  </header>
-
   <TagFilterBar
     action="/articles"
     categories={data.categories}
@@ -62,15 +57,6 @@
 <style>
   .page {
     padding-block: var(--space-8) var(--space-9);
-  }
-
-  .page-header {
-    max-width: var(--prose-max-width);
-    margin-bottom: var(--space-7);
-  }
-
-  .page-header p {
-    color: var(--color-text-secondary);
   }
 
   .list {

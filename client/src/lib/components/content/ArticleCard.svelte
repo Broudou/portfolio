@@ -13,11 +13,7 @@
   const category = $derived(populated(article.category));
 </script>
 
-<a href="/articles/{article.slug}" class="card pastel-none interactive" class:no-cover={!cover}>
-  {#if cover}
-    <img src={cover.url} alt={cover.altText} class="cover" loading="lazy" width="1200" height="800" />
-  {/if}
-  <div class="scrim"></div>
+<a href="/articles/{article.slug}" class="card pastel-none interactive">
   <div class="content">
     <p class="meta">
       {#if category}<span>{category.name}</span> · {/if}
@@ -27,19 +23,24 @@
     <h3>{article.title}</h3>
     <p class="excerpt">{article.excerpt}</p>
   </div>
+  {#if cover}
+    <div class="image-pane">
+      <img src={cover.url} alt={cover.altText} class="cover" loading="lazy" width="1200" height="800" />
+    </div>
+  {/if}
 </a>
 
 <style>
   .card {
-    position: relative;
-    display: block;
-    isolation: isolate;
+    display: flex;
+    align-items: stretch;
     overflow: hidden;
     min-height: 128px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    background: var(--color-surface);
+    background: var(--color-bg);
     text-decoration: none;
+    color: inherit;
     transition:
       transform var(--duration-base) var(--easing-standard),
       box-shadow var(--duration-base) var(--easing-standard),
@@ -53,14 +54,22 @@
     border-color: var(--color-accent);
   }
 
-  .no-cover {
-    background: var(--color-text-primary);
+  .content {
+    flex: 1 1 50%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .image-pane {
+    position: relative;
+    flex: 0 0 50%;
+    overflow: hidden;
   }
 
   .cover {
-    position: absolute;
-    inset: 0;
-    z-index: -2;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -77,42 +86,33 @@
     transform: scale(1.05);
   }
 
-  .scrim {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(to top, rgba(28, 25, 23, 0.85), rgba(28, 25, 23, 0.25) 60%, rgba(28, 25, 23, 0.1));
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: 100%;
-    padding: var(--space-4);
-  }
-
   .meta {
     font-size: var(--font-size-sm);
-    color: var(--color-text-inverse);
-    opacity: 0.85;
+    color: var(--color-text-secondary);
     margin-bottom: var(--space-2);
   }
 
   h3 {
     margin-bottom: var(--space-2);
     font-size: var(--font-size-lg);
-    color: var(--color-text-inverse);
   }
 
   .excerpt {
-    color: var(--color-text-inverse);
-    opacity: 0.85;
+    color: var(--color-text-secondary);
     margin: 0;
-    max-width: 60ch;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  @media (max-width: 640px) {
+    .image-pane {
+      display: none;
+    }
+
+    .content {
+      flex-basis: 100%;
+    }
   }
 </style>

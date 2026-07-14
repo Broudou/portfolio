@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
+  import Hero from '$lib/components/content/Hero.svelte';
   import ProjectListItem from '$lib/components/content/ProjectListItem.svelte';
   import ArticleListItem from '$lib/components/content/ArticleListItem.svelte';
   import { populated } from '$lib/utils/populated.js';
@@ -31,18 +32,7 @@
 
 {#if data.biography}
   <section class="hero container">
-    <div class="hero-inner">
-      {#if avatar}
-        <img src={avatar.url} alt={avatar.altText} class="avatar" width="96" height="96" />
-      {:else}
-        <div class="avatar avatar-placeholder" aria-hidden="true"></div>
-      {/if}
-      <div class="hero-text">
-        <h1>{data.biography.fullName}</h1>
-        <p class="headline">{data.biography.headline}</p>
-        <p class="summary">{data.biography.summary}</p>
-      </div>
-    </div>
+    <Hero fullName={data.biography.fullName} headline={data.biography.headline} summary={data.biography.summary} {avatar} />
   </section>
 {/if}
 
@@ -71,45 +61,6 @@
     padding-block: var(--space-6);
   }
 
-  .hero-inner {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-  }
-
-  .avatar {
-    flex-shrink: 0;
-    width: 96px;
-    height: 96px;
-    border-radius: var(--radius-full);
-    object-fit: cover;
-  }
-
-  .avatar-placeholder {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-  }
-
-  .hero-text {
-    text-align: left;
-  }
-
-  .hero h1 {
-    font-size: var(--font-size-3xl);
-    margin-bottom: var(--space-1);
-  }
-
-  .headline {
-    font-size: var(--font-size-base);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--space-2);
-  }
-
-  .summary {
-    max-width: 60ch;
-    margin-bottom: 0;
-  }
-
   .section {
     padding-block: var(--space-7);
   }
@@ -121,16 +72,5 @@
 
   .list {
     max-width: var(--prose-max-width);
-  }
-
-  @media (max-width: 640px) {
-    .hero-inner {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    .hero-text {
-      text-align: center;
-    }
   }
 </style>

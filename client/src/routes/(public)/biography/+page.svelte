@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
+  import Hero from '$lib/components/content/Hero.svelte';
   import MarkdownRenderer from '$lib/components/content/MarkdownRenderer.svelte';
   import { populated } from '$lib/utils/populated.js';
   import { resolveSeo } from '$lib/utils/seo.js';
@@ -38,18 +39,12 @@
 />
 
 <article class="container page">
-  <header class="page-header">
-    {#if avatar}
-      <img src={avatar.url} alt={avatar.altText} class="avatar" width="140" height="140" />
+  <div class="hero-wrap">
+    <Hero fullName={data.biography.fullName} headline={data.biography.headline} summary={data.biography.summary} {avatar} />
+    {#if data.biography.location}
+      <p class="location">{data.biography.location}</p>
     {/if}
-    <div>
-      <h1>{data.biography.fullName}</h1>
-      <p class="headline">{data.biography.headline}</p>
-      {#if data.biography.location}
-        <p class="location">{data.biography.location}</p>
-      {/if}
-    </div>
-  </header>
+  </div>
 
   {#if data.biography.skills.length > 0}
     <ul class="skills">
@@ -78,30 +73,14 @@
     padding-block: var(--space-8) var(--space-9);
   }
 
-  .page-header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-5);
+  .hero-wrap {
     margin-bottom: var(--space-6);
-  }
-
-  .avatar {
-    width: 140px;
-    height: 140px;
-    border-radius: var(--radius-full);
-    object-fit: cover;
-  }
-
-  .headline {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--space-1);
   }
 
   .location {
     color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
-    margin: 0;
+    margin: var(--space-2) 0 0;
   }
 
   .skills {

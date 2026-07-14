@@ -15,12 +15,12 @@ const DEFAULTS: Partial<BiographyDocument> = {
 };
 
 export const getBiography = asyncHandler(async (_req: Request, res: Response) => {
-  const biography = await getOrCreateSingleton(Biography, DEFAULTS);
+  const biography = await getOrCreateSingleton(Biography, DEFAULTS, 'avatar');
   sendSuccess(res, biography.toJSON());
 });
 
 export const updateBiography = asyncHandler(async (req: Request, res: Response) => {
   const patch = req.body as UpdateBiographyInput;
-  const biography = await updateSingleton(Biography, patch);
+  const biography = await updateSingleton(Biography, patch, 'avatar');
   sendSuccess(res, biography.toJSON());
 });
