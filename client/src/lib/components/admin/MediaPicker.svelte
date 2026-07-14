@@ -11,6 +11,9 @@
 
   let { value = $bindable(), id, label, media }: Props = $props();
 
+  const MAX_FILE_SIZE_MB = 5;
+  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
   let localMedia = $state<Media[]>(media);
   let dialogEl: HTMLDialogElement;
   let uploading = $state(false);
@@ -30,6 +33,17 @@
 
   function clearSelection() {
     value = null;
+  }
+
+  function handleFileChange(event: Event) {
+    const input = event.currentTarget as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file && file.size > MAX_FILE_SIZE_BYTES) {
+      uploadError = `Image is too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Max size is ${MAX_FILE_SIZE_MB} MB.`;
+      input.value = '';
+    } else {
+      uploadError = null;
+    }
   }
 </script>
 
@@ -87,10 +101,11 @@
   >
     <h3>Upload new</h3>
     <label for="{id}-file" class="visually-hidden">Choose a file</label>
-    <input id="{id}-file" type="file" name="file" accept="image/*" required />
+    <input id="{id}-file" type="file" name="file" accept="image/*" required onchange={handleFileChange} />
+    <p class="hint">Max size {MAX_FILE_SIZE_MB} MB.</p>
     <label for="{id}-alt" class="visually-hidden">Alt text</label>
     <input id="{id}-alt" type="text" name="altText" placeholder="Alt text (required)" required />
-    <button type="submit" disabled={uploading}>{uploading ? 'Uploading…' : 'Upload'}</button>
+    <button type="submit" disabled={uploading || !!uploadError}>{uploading ? 'Uploading…' : 'Upload'}</button>
     {#if uploadError}<p class="error" role="alert">{uploadError}</p>{/if}
   </form>
 
@@ -215,6 +230,13 @@
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-md);
     border: 1px solid var(--color-border);
+  }
+
+  .hint {
+    width: 100%;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    margin: 0;
   }
 
   .error {

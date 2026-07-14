@@ -68,8 +68,6 @@
 
 <style>
   .hero {
-    display: flex;
-    justify-content: center;
     padding-block: var(--space-6);
   }
 

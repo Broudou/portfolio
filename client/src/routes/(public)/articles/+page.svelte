@@ -50,7 +50,7 @@
   {#if data.articles.length === 0}
     <EmptyState title="No articles found" description="Try a different search or clear the filters above." />
   {:else}
-    <div class="grid">
+    <div class="list">
       {#each data.articles as article (article.id)}
         <ArticleCard {article} />
       {/each}
@@ -73,9 +73,9 @@
     color: var(--color-text-secondary);
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  .list {
+    display: flex;
+    flex-direction: column;
     gap: var(--space-5);
   }
 </style>
