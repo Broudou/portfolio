@@ -36,21 +36,23 @@
   </section>
 {/if}
 
-{#if data.featuredProjects.length > 0}
-  <section class="container section" aria-label="Featured projects">
+{#if data.featuredArticles.length > 0}
+  <section class="container section" aria-label="Latest writing">
+    <h2 class="section-title">Latest Writing</h2>
     <div class="list">
-      {#each data.featuredProjects as project (project.id)}
-        <ProjectListItem {project} />
+      {#each data.featuredArticles as article (article.id)}
+        <ArticleListItem {article} />
       {/each}
     </div>
   </section>
 {/if}
 
-{#if data.featuredArticles.length > 0}
-  <section class="container section pastel" aria-label="Latest writing">
+{#if data.featuredProjects.length > 0}
+  <section class="container section" aria-label="Featured projects">
+    <h2 class="section-title">Featured Projects</h2>
     <div class="list">
-      {#each data.featuredArticles as article (article.id)}
-        <ArticleListItem {article} />
+      {#each data.featuredProjects as project (project.id)}
+        <ProjectListItem {project} />
       {/each}
     </div>
   </section>
@@ -65,9 +67,9 @@
     padding-block: var(--space-7);
   }
 
-  .section.pastel {
-    background: var(--color-pastel-blue);
-    border-radius: var(--radius-lg);
+  .section-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-4);
   }
 
   .list {

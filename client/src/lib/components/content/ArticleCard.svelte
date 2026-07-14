@@ -35,7 +35,6 @@
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    min-height: 128px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     background: var(--color-bg);
@@ -60,7 +59,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-3) var(--space-5);
   }
 
   .image-pane {
@@ -89,11 +88,11 @@
   .meta {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
   }
 
   h3 {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
     font-size: var(--font-size-lg);
   }
 
