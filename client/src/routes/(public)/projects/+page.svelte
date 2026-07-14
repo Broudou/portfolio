@@ -2,7 +2,6 @@
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
   import ProjectCard from '$lib/components/content/ProjectCard.svelte';
-  import TagFilterBar from '$lib/components/content/TagFilterBar.svelte';
   import Pagination from '$lib/components/ui/Pagination.svelte';
   import EmptyState from '$lib/components/ui/EmptyState.svelte';
   import { resolveSeo } from '$lib/utils/seo.js';
@@ -31,21 +30,8 @@
 <SeoHead title={seo.title} description={seo.description} canonicalUrl={seo.canonicalUrl} ogImageUrl={seo.ogImageUrl} />
 
 <div class="container page">
-  <header class="page-header">
-    <h1>Projects</h1>
-    <p>A selection of systems and tools I've built, from internal platforms to open-source libraries.</p>
-  </header>
-
-  <TagFilterBar
-    action="/projects"
-    categories={data.categories}
-    tags={data.tags}
-    selectedCategory={data.filters.category}
-    selectedTag={data.filters.tag}
-  />
-
   {#if data.projects.length === 0}
-    <EmptyState title="No projects found" description="Try clearing the filters above." />
+    <EmptyState title="No projects found" description="Check back soon for new projects." />
   {:else}
     <div class="list">
       {#each data.projects as project (project.id)}
@@ -61,18 +47,21 @@
     padding-block: var(--space-8) var(--space-9);
   }
 
-  .page-header {
-    max-width: var(--prose-max-width);
-    margin-bottom: var(--space-7);
-  }
-
-  .page-header p {
-    color: var(--color-text-secondary);
-  }
-
   .list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--space-5);
+  }
+
+  @media (max-width: 1024px) {
+    .list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .list {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

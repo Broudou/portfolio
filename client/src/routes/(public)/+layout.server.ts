@@ -4,5 +4,8 @@ import { getSettings } from '$lib/api/settings.js';
 
 export const load: LayoutServerLoad = async () => {
   const [navigation, settings] = await Promise.all([listVisibleNavigation(), getSettings()]);
-  return { navigation, settings };
+  return {
+    navigation: navigation.filter((item) => item.label.trim().toLowerCase() !== 'publications'),
+    settings,
+  };
 };

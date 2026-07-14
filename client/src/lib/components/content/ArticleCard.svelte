@@ -35,7 +35,7 @@
     display: block;
     isolation: isolate;
     overflow: hidden;
-    min-height: 240px;
+    min-height: 128px;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     background: var(--color-surface);
@@ -89,8 +89,7 @@
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
-    min-height: 240px;
-    padding: var(--space-5);
+    padding: var(--space-4);
   }
 
   .meta {
@@ -111,5 +110,9 @@
     opacity: 0.85;
     margin: 0;
     max-width: 60ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 </style>

@@ -35,7 +35,7 @@
     display: block;
     isolation: isolate;
     overflow: hidden;
-    min-height: 240px;
+    aspect-ratio: 1 / 1;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     background: var(--color-surface);
@@ -89,7 +89,6 @@
     flex-direction: column;
     justify-content: flex-end;
     height: 100%;
-    min-height: 240px;
     padding: var(--space-5);
   }
 
