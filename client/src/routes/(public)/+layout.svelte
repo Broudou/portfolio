@@ -15,7 +15,7 @@
 </script>
 
 <SkipToContent />
-<Nav items={data.navigation} siteTitle={data.settings.siteTitle} currentPath={page.url.pathname} />
+<Nav items={data.navigation} currentPath={page.url.pathname} />
 
 <main id="main-content" tabindex="-1">
   {@render children()}

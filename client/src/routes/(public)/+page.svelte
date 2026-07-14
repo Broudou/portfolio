@@ -32,7 +32,7 @@
 {#if data.biography}
   <section class="hero container">
     {#if avatar}
-      <img src={avatar.url} alt={avatar.altText} class="avatar" width="160" height="160" />
+      <img src={avatar.url} alt={avatar.altText} class="avatar" width="96" height="96" />
     {/if}
     <div>
       <p class="eyebrow">{data.settings.tagline}</p>
@@ -44,11 +44,7 @@
 {/if}
 
 {#if data.featuredProjects.length > 0}
-  <section class="container section">
-    <div class="section-heading">
-      <h2>Featured projects</h2>
-      <a href="/projects">All projects →</a>
-    </div>
+  <section class="container section" aria-label="Featured projects">
     <div class="list">
       {#each data.featuredProjects as project (project.id)}
         <ProjectListItem {project} />
@@ -58,11 +54,7 @@
 {/if}
 
 {#if data.featuredArticles.length > 0}
-  <section class="container section pastel">
-    <div class="section-heading">
-      <h2>Latest writing</h2>
-      <a href="/articles">All articles →</a>
-    </div>
+  <section class="container section pastel" aria-label="Latest writing">
     <div class="list">
       {#each data.featuredArticles as article (article.id)}
         <ArticleListItem {article} />
@@ -75,14 +67,14 @@
   .hero {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: var(--space-6);
+    gap: var(--space-4);
     align-items: center;
-    padding-block: var(--space-9);
+    padding-block: var(--space-6);
   }
 
   .avatar {
-    width: 160px;
-    height: 160px;
+    width: 96px;
+    height: 96px;
     border-radius: var(--radius-full);
     object-fit: cover;
   }
@@ -93,13 +85,18 @@
     font-size: var(--font-size-sm);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-1);
+  }
+
+  .hero h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-1);
   }
 
   .headline {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
     color: var(--color-text-secondary);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
   }
 
   .summary {
@@ -108,25 +105,12 @@
   }
 
   .section {
-    padding-block: var(--space-8);
+    padding-block: var(--space-7);
   }
 
   .section.pastel {
     background: var(--color-pastel-blue);
     border-radius: var(--radius-lg);
-  }
-
-  .section-heading {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: var(--space-6);
-  }
-
-  .section-heading a {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    text-decoration: none;
   }
 
   .list {

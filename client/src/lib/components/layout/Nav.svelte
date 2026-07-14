@@ -3,11 +3,10 @@
 
   interface Props {
     items: NavigationItem[];
-    siteTitle: string;
     currentPath: string;
   }
 
-  let { items, siteTitle, currentPath }: Props = $props();
+  let { items, currentPath }: Props = $props();
   let menuOpen = $state(false);
 
   function isActive(path: string): boolean {
@@ -28,8 +27,6 @@
 
 <header class="site-header">
   <div class="container bar">
-    <a href="/" class="brand" onclick={closeMenu}>{siteTitle}</a>
-
     <button
       class="menu-toggle"
       type="button"
@@ -79,19 +76,12 @@
   .bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding-block: var(--space-4);
-  }
-
-  .brand {
-    font-weight: var(--font-weight-semibold);
-    font-size: var(--font-size-lg);
-    color: var(--color-text-primary);
-    text-decoration: none;
   }
 
   .menu-toggle {
     display: none;
+    margin-left: auto;
     background: none;
     border: none;
     padding: var(--space-2);
