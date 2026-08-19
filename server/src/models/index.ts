@@ -7,5 +7,6 @@ export * from './Category.model.js';
 export * from './Tag.model.js';
 export * from './NavigationItem.model.js';
 export * from './Setting.model.js';
-export * from './TimelineEvent.model.js';
+export * from './Album.model.js';
+export * from './Photo.model.js';
 export * from './ContactMessage.model.js';

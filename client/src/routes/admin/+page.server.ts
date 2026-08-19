@@ -3,18 +3,18 @@ import { listProjects } from '$lib/api/projects.js';
 import { listArticles } from '$lib/api/articles.js';
 import { listCategories } from '$lib/api/categories.js';
 import { listTags } from '$lib/api/tags.js';
-import { listTimelineEvents } from '$lib/api/timeline.js';
+import { listAlbums } from '$lib/api/albums.js';
 
 export const load: PageServerLoad = async ({ locals, parent }) => {
   const { unreadMessagesCount } = await parent();
   const token = locals.token!;
 
-  const [projects, articles, categories, tags, timeline] = await Promise.all([
+  const [projects, articles, categories, tags, albums] = await Promise.all([
     listProjects({ token, limit: 1 }),
     listArticles({ token, limit: 1 }),
     listCategories(),
     listTags(),
-    listTimelineEvents(),
+    listAlbums({ token, limit: 1 }),
   ]);
 
   return {
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
       articles: articles.meta.total,
       categories: categories.length,
       tags: tags.length,
-      timeline: timeline.length,
+      albums: albums.meta.total,
       unreadMessages: unreadMessagesCount,
     },
   };

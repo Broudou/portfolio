@@ -7,7 +7,7 @@
   import Button from '$lib/components/ui/Button.svelte';
   import EmptyState from '$lib/components/ui/EmptyState.svelte';
   import { toastStore } from '$lib/stores/toast.svelte.js';
-  import { formatMonthYear } from '$lib/utils/date.js';
+  import { populated } from '$lib/utils/populated.js';
   import type { PageData } from './$types.js';
 
   interface Props {
@@ -18,40 +18,47 @@
   let pendingDeleteId = $state<string | null>(null);
   let deleteForm: HTMLFormElement;
 
-  const pendingEvent = $derived(data.events.find((e) => e.id === pendingDeleteId));
+  const pendingAlbum = $derived(data.albums.find((a) => a.id === pendingDeleteId));
 </script>
 
-<AdminHeader title="Timeline" user={data.user}>
+<AdminHeader title="Photos" user={data.user}>
   {#snippet actions()}
-    <Button href="/admin/timeline/new" size="sm">New event</Button>
+    <Button href="/admin/photos/new" size="sm">New album</Button>
   {/snippet}
 </AdminHeader>
 
 <div class="admin-body">
-  {#if data.events.length === 0}
-    <EmptyState title="No timeline events yet">
-      {#snippet action()}<Button href="/admin/timeline/new">New event</Button>{/snippet}
+  {#if data.albums.length === 0}
+    <EmptyState title="No albums yet" description="Create your first photo album to get started.">
+      {#snippet action()}<Button href="/admin/photos/new">New album</Button>{/snippet}
     </EmptyState>
   {:else}
-    <DataTable caption="Timeline events">
+    <DataTable caption="Photo albums">
       <thead>
         <tr>
-          <th>Date</th>
+          <th><span class="visually-hidden">Cover</span></th>
           <th>Title</th>
-          <th>Type</th>
+          <th>Status</th>
+          <th>Featured</th>
           <th><span class="visually-hidden">Actions</span></th>
         </tr>
       </thead>
       <tbody>
-        {#each data.events as event (event.id)}
+        {#each data.albums as album (album.id)}
+          {@const cover = populated(album.cover)}
           <tr>
-            <td>{formatMonthYear(event.date)}</td>
-            <td>{event.title}</td>
-            <td><Badge variant="accent">{event.type}</Badge></td>
+            <td class="cover-cell">
+              {#if cover}
+                <img src={cover.url} alt="" loading="lazy" />
+              {/if}
+            </td>
+            <td>{album.title}</td>
+            <td><Badge variant={album.status === 'published' ? 'success' : 'neutral'}>{album.status}</Badge></td>
+            <td>{album.featured ? 'Yes' : 'No'}</td>
             <td>
               <div class="row-actions">
-                <a href="/admin/timeline/{event.id}/edit">Edit</a>
-                <button type="button" class="link-danger" onclick={() => (pendingDeleteId = event.id)}>
+                <a href="/admin/photos/{album.id}/edit">Edit</a>
+                <button type="button" class="link-danger" onclick={() => (pendingDeleteId = album.id)}>
                   Delete
                 </button>
               </div>
@@ -71,7 +78,7 @@
   use:enhance={() => {
     return async ({ result, update }) => {
       pendingDeleteId = null;
-      if (result.type === 'success') toastStore.push('Timeline event deleted.', 'success');
+      if (result.type === 'success') toastStore.push('Album deleted.', 'success');
       await update();
     };
   }}
@@ -81,8 +88,8 @@
 
 <ConfirmDialog
   open={pendingDeleteId !== null}
-  title="Delete timeline event?"
-  message={`Delete "${pendingEvent?.title ?? ''}"? This cannot be undone.`}
+  title="Delete album?"
+  message={`Delete "${pendingAlbum?.title ?? ''}"? This also deletes every photo in it. This cannot be undone.`}
   onconfirm={() => deleteForm.requestSubmit()}
   oncancel={() => (pendingDeleteId = null)}
 />
@@ -90,6 +97,14 @@
 <style>
   .admin-body {
     padding: var(--space-6);
+  }
+
+  .cover-cell img {
+    width: 64px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    display: block;
   }
 
   .row-actions {

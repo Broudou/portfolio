@@ -7,7 +7,8 @@ import { categoriesRouter } from './categories.routes.js';
 import { tagsRouter } from './tags.routes.js';
 import { mediaRouter } from './media.routes.js';
 import { navigationRouter } from './navigation.routes.js';
-import { timelineRouter } from './timeline.routes.js';
+import { albumsRouter } from './albums.routes.js';
+import { photosRouter } from './photos.routes.js';
 import { settingsRouter } from './settings.routes.js';
 import { contactRouter } from './contact.routes.js';
 
@@ -21,6 +22,7 @@ v1Router.use('/categories', categoriesRouter);
 v1Router.use('/tags', tagsRouter);
 v1Router.use('/media', mediaRouter);
 v1Router.use('/navigation', navigationRouter);
-v1Router.use('/timeline', timelineRouter);
+v1Router.use('/albums', albumsRouter);
+v1Router.use('/photos', photosRouter);
 v1Router.use('/settings', settingsRouter);
 v1Router.use('/contact', contactRouter);

@@ -1,11 +1,11 @@
 import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types.js';
-import { deleteTimelineEvent, listTimelineEvents } from '$lib/api/timeline.js';
+import { deleteAlbum, listAlbums } from '$lib/api/albums.js';
 import { ApiClientError } from '$lib/api/client.js';
 
-export const load: PageServerLoad = async () => {
-  const events = await listTimelineEvents();
-  return { events: events.slice().reverse() };
+export const load: PageServerLoad = async ({ locals }) => {
+  const result = await listAlbums({ token: locals.token, limit: 100 });
+  return { albums: result.items };
 };
 
 export const actions: Actions = {
@@ -13,7 +13,7 @@ export const actions: Actions = {
     const formData = await request.formData();
     const id = String(formData.get('id'));
     try {
-      await deleteTimelineEvent(locals.token!, id);
+      await deleteAlbum(locals.token!, id);
     } catch (err) {
       if (err instanceof ApiClientError) return fail(err.status, { message: err.message });
       throw err;

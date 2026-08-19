@@ -20,14 +20,20 @@ const storage = multer.diskStorage({
   },
 });
 
-export const uploadSingleImage = multer({
+const multerOptions = {
   storage,
   limits: { fileSize: env.MAX_UPLOAD_SIZE_MB * 1024 * 1024 },
-  fileFilter: (_req, file, callback) => {
+  fileFilter: (_req: unknown, file: Express.Multer.File, callback: multer.FileFilterCallback) => {
     if (!ALLOWED_MIME_TYPES.has(file.mimetype)) {
       callback(ApiError.badRequest(`Unsupported file type: ${file.mimetype}`));
       return;
     }
     callback(null, true);
   },
-}).single('file');
+};
+
+export const uploadSingleImage = multer(multerOptions).single('file');
+
+/** Multi-file upload used by the Photos admin (album photo batch-add). */
+export const MAX_PHOTOS_PER_UPLOAD = 20;
+export const uploadPhotos = multer(multerOptions).array('files', MAX_PHOTOS_PER_UPLOAD);

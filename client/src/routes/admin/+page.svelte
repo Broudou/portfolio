@@ -14,7 +14,7 @@
     { label: 'Articles', value: data.counts.articles, href: '/admin/articles' },
     { label: 'Categories', value: data.counts.categories, href: '/admin/categories' },
     { label: 'Tags', value: data.counts.tags, href: '/admin/tags' },
-    { label: 'Timeline events', value: data.counts.timeline, href: '/admin/timeline' },
+    { label: 'Photo albums', value: data.counts.albums, href: '/admin/photos' },
     { label: 'Unread messages', value: data.counts.unreadMessages, href: '/admin/messages' },
   ]);
 </script>

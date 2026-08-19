@@ -2,16 +2,17 @@ import mongoose from 'mongoose';
 import { connectDatabase } from '../db/connect.js';
 import { logger } from '../utils/logger.js';
 import {
+  Album,
   Article,
   Biography,
   Category,
   ContactMessage,
   Media,
   NavigationItem,
+  Photo,
   Project,
   Setting,
   Tag,
-  TimelineEvent,
   User,
 } from '../models/index.js';
 import { seedAdminUser, SEED_ADMIN_EMAIL, SEED_ADMIN_PASSWORD } from './data/user.seed.js';
@@ -22,7 +23,7 @@ import { seedBiography } from './data/biography.seed.js';
 import { seedProjects } from './data/projects.seed.js';
 import { seedArticles } from './data/articles.seed.js';
 import { seedNavigation } from './data/navigation.seed.js';
-import { seedTimeline } from './data/timeline.seed.js';
+import { seedPhotos } from './data/photos.seed.js';
 import { seedSettings } from './data/settings.seed.js';
 import { seedContactMessages } from './data/contactMessages.seed.js';
 
@@ -36,7 +37,8 @@ const ALL_MODELS = [
   Tag,
   NavigationItem,
   Setting,
-  TimelineEvent,
+  Album,
+  Photo,
   ContactMessage,
 ];
 
@@ -70,7 +72,7 @@ export async function runSeed({ force = false }: { force?: boolean } = {}): Prom
   await seedProjects({ categories, tags, media });
   await seedArticles({ authorId: admin.id, categories, tags, media });
   await seedNavigation();
-  await seedTimeline();
+  await seedPhotos(admin.id);
   await seedSettings({ ogImageId: media['og-default'].id });
   await seedContactMessages();
 

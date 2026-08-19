@@ -1,15 +1,17 @@
 import type { RequestHandler } from './$types.js';
 import { listProjects } from '$lib/api/projects.js';
 import { listArticles } from '$lib/api/articles.js';
+import { listAlbums } from '$lib/api/albums.js';
 
-const STATIC_PATHS = ['/', '/biography', '/projects', '/articles', '/timeline', '/contact'];
+const STATIC_PATHS = ['/', '/biography', '/projects', '/articles', '/photos', '/contact'];
 
 export const GET: RequestHandler = async ({ url }) => {
   const siteUrl = url.origin;
 
-  const [projects, articles] = await Promise.all([
+  const [projects, articles, albums] = await Promise.all([
     listProjects({ limit: 50 }),
     listArticles({ limit: 50 }),
+    listAlbums({ limit: 50 }),
   ]);
 
   const urls = [
@@ -21,6 +23,10 @@ export const GET: RequestHandler = async ({ url }) => {
     ...articles.items.map((article) => ({
       loc: `${siteUrl}/articles/${article.slug}`,
       lastmod: article.updatedAt,
+    })),
+    ...albums.items.map((album) => ({
+      loc: `${siteUrl}/photos/${album.slug}`,
+      lastmod: album.updatedAt,
     })),
   ];
 

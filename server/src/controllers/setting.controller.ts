@@ -13,10 +13,9 @@ export const SETTINGS_DEFAULTS: Partial<SettingDocument> = {
   socialLinks: [],
   seoDefaults: { title: 'Your Name — Software Engineer', description: 'Personal portfolio.' },
   homepageSections: [
-    { type: 'hero', enabled: true, order: 0, limit: 1 },
-    { type: 'featuredProjects', enabled: true, order: 1, limit: 3 },
-    { type: 'featuredArticles', enabled: true, order: 2, limit: 3 },
-    { type: 'timelinePreview', enabled: true, order: 3, limit: 5 },
+    { type: 'featuredProjects', enabled: true, order: 0, limit: 3 },
+    { type: 'featuredArticles', enabled: true, order: 1, limit: 3 },
+    { type: 'photos', enabled: true, order: 2, limit: 3 },
   ],
 };
 

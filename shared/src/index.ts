@@ -17,5 +17,6 @@ export * from './schemas/article.schema.js';
 export * from './schemas/media.schema.js';
 export * from './schemas/navigation.schema.js';
 export * from './schemas/setting.schema.js';
-export * from './schemas/timelineEvent.schema.js';
+export * from './schemas/album.schema.js';
+export * from './schemas/photo.schema.js';
 export * from './schemas/contactMessage.schema.js';

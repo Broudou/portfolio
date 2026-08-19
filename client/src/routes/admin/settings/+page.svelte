@@ -25,10 +25,9 @@
   };
 
   const SECTION_LABEL: Record<string, string> = {
-    hero: 'Hero (biography summary)',
     featuredProjects: 'Featured projects',
     featuredArticles: 'Featured articles',
-    timelinePreview: 'Timeline preview',
+    photos: 'Photo albums',
   };
 
   function socialUrl(platform: string): string {

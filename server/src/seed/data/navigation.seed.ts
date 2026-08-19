@@ -5,7 +5,7 @@ const ITEMS = [
   { label: 'Biography', path: '/biography', order: 1 },
   { label: 'Projects', path: '/projects', order: 2 },
   { label: 'Articles', path: '/articles', order: 3 },
-  { label: 'Timeline', path: '/timeline', order: 4 },
+  { label: 'Photos', path: '/photos', order: 4 },
   { label: 'Contact', path: '/contact', order: 5 },
 ];
 

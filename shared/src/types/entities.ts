@@ -14,7 +14,6 @@ import type {
   HomepageSectionType,
   Role,
   SocialPlatform,
-  TimelineEventType,
 } from '../constants/enums.js';
 
 /** Base fields present on every persisted document. */
@@ -154,13 +153,22 @@ export interface Setting extends BaseEntity {
   homepageSections: HomepageSectionConfig[];
 }
 
-export interface TimelineEvent extends BaseEntity {
+export interface Album extends BaseEntity {
   title: string;
-  description: string;
-  date: string;
-  endDate?: string | null;
-  type: TimelineEventType;
-  link?: string;
+  slug: string;
+  description?: string;
+  cover?: Media | string | null;
+  status: ContentStatus;
+  featured: boolean;
+  order: number;
+  seo?: SeoMeta;
+}
+
+export interface Photo extends BaseEntity {
+  album: Album | string;
+  image: Media | string;
+  caption?: string;
+  order: number;
 }
 
 export interface ContactMessage extends BaseEntity {

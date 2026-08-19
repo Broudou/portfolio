@@ -13,20 +13,10 @@ export type ContentStatus = (typeof CONTENT_STATUSES)[number];
 export const CATEGORY_APPLIES_TO = ['project', 'article', 'both'] as const;
 export type CategoryAppliesTo = (typeof CATEGORY_APPLIES_TO)[number];
 
-export const TIMELINE_EVENT_TYPES = [
-  'education',
-  'work',
-  'achievement',
-  'project',
-  'talk',
-] as const;
-export type TimelineEventType = (typeof TIMELINE_EVENT_TYPES)[number];
-
 export const HOMEPAGE_SECTION_TYPES = [
-  'hero',
   'featuredProjects',
   'featuredArticles',
-  'timelinePreview',
+  'photos',
 ] as const;
 export type HomepageSectionType = (typeof HOMEPAGE_SECTION_TYPES)[number];
 
