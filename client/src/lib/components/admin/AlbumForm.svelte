@@ -16,9 +16,10 @@
     errors?: FormErrors;
     message?: string;
     submitLabel?: string;
+    action?: string;
   }
 
-  let { album, media, errors, message, submitLabel = 'Save album' }: Props = $props();
+  let { album, media, errors, message, submitLabel = 'Save album', action }: Props = $props();
 
   let coverId = $state<string | null>(populated(album?.cover)?.id ?? null);
   let submitting = $state(false);
@@ -26,6 +27,7 @@
 
 <form
   method="POST"
+  {action}
   use:enhance={() => {
     submitting = true;
     return async ({ result, update }) => {

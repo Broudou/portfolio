@@ -23,6 +23,7 @@
       errors={form?.errors}
       message={form?.message}
       submitLabel="Save changes"
+      action="?/save"
     />
   {/key}
 

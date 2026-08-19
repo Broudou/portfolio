@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 };
 
 export const actions: Actions = {
-  default: async ({ request, params, locals }) => {
+  save: async ({ request, params, locals }) => {
     const formData = await request.formData();
     const parsed = updateAlbumSchema.safeParse(parseAlbumForm(formData));
 
