@@ -18,15 +18,15 @@ import {
   listPhotosByAlbum,
   reorderPhotos,
 } from '../../controllers/photo.controller.js';
-import { requireAuth } from '../../middleware/auth.middleware.js';
+import { optionalAuth, requireAuth } from '../../middleware/auth.middleware.js';
 import { validate } from '../../middleware/validate.middleware.js';
 import { uploadPhotos } from '../../middleware/upload.middleware.js';
 
 export const albumsRouter = Router();
 
-albumsRouter.get('/', listAlbums);
+albumsRouter.get('/', optionalAuth, listAlbums);
 albumsRouter.patch('/reorder', requireAuth, validate(reorderAlbumsSchema), reorderAlbums);
-albumsRouter.get('/:albumId/photos', listPhotosByAlbum);
+albumsRouter.get('/:albumId/photos', optionalAuth, listPhotosByAlbum);
 albumsRouter.post('/:albumId/photos', requireAuth, uploadPhotos, addPhotos);
 albumsRouter.patch(
   '/:albumId/photos/reorder',
@@ -34,7 +34,7 @@ albumsRouter.patch(
   validate(reorderPhotosSchema),
   reorderPhotos,
 );
-albumsRouter.get('/:slug', getAlbumBySlug);
+albumsRouter.get('/:slug', optionalAuth, getAlbumBySlug);
 albumsRouter.post('/', requireAuth, validate(createAlbumSchema), createAlbum);
 albumsRouter.put('/:id', requireAuth, validate(updateAlbumSchema), updateAlbum);
 albumsRouter.delete('/:id', requireAuth, deleteAlbum);
