@@ -5,7 +5,6 @@ const photoSchema = new Schema(
   {
     album: { type: Schema.Types.ObjectId, ref: 'Album', required: true },
     image: { type: Schema.Types.ObjectId, ref: 'Media', required: true },
-    caption: { type: String, trim: true, maxlength: 300 },
     order: { type: Number, default: 0 },
   },
   { timestamps: true },

@@ -21,7 +21,6 @@
   let deleteForm: HTMLFormElement;
 
   const sorted = $derived([...photos].sort((a, b) => a.order - b.order));
-  const pendingPhoto = $derived(photos.find((p) => p.id === pendingDeleteId));
 
   function handleFilesChange(event: Event) {
     const input = event.currentTarget as HTMLInputElement;
@@ -84,10 +83,15 @@
             {#if image}
               <img src={image.url} alt={image.altText} loading="lazy" />
             {/if}
-            <label class="order-label">
-              Order
-              <input type="number" name="order_{photo.id}" value={photo.order} />
-            </label>
+            <div class="tile-footer">
+              <label class="order-label">
+                Order
+                <input type="number" name="order_{photo.id}" value={photo.order} />
+              </label>
+              <button type="button" class="link-danger" onclick={() => (pendingDeleteId = photo.id)}>
+                Delete
+              </button>
+            </div>
           </div>
         {/each}
       </div>
@@ -95,33 +99,6 @@
         {savingOrder ? 'Saving…' : 'Save order'}
       </button>
     </form>
-
-    <ul class="caption-list">
-      {#each sorted as photo (photo.id)}
-        <li>
-          <form
-            method="POST"
-            action="?/updateCaption"
-            use:enhance={() => {
-              return async ({ result, update }) => {
-                if (result.type === 'success') toastStore.push('Caption saved.', 'success');
-                await update();
-              };
-            }}
-          >
-            <input type="hidden" name="id" value={photo.id} />
-            <label for="caption-{photo.id}">Caption</label>
-            <textarea id="caption-{photo.id}" name="caption" rows="2">{photo.caption ?? ''}</textarea>
-            <div class="caption-actions">
-              <button type="submit">Save caption</button>
-              <button type="button" class="link-danger" onclick={() => (pendingDeleteId = photo.id)}>
-                Delete photo
-              </button>
-            </div>
-          </form>
-        </li>
-      {/each}
-    </ul>
   {/if}
 </section>
 
@@ -144,7 +121,7 @@
 <ConfirmDialog
   open={pendingDeleteId !== null}
   title="Delete photo?"
-  message={`Delete "${pendingPhoto?.caption || 'this photo'}"? This cannot be undone.`}
+  message="Delete this photo? This cannot be undone."
   onconfirm={() => deleteForm.requestSubmit()}
   oncancel={() => (pendingDeleteId = null)}
 />
@@ -223,12 +200,18 @@
     display: block;
   }
 
-  .order-label {
+  .tile-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
+  }
+
+  .order-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
   }
@@ -254,53 +237,12 @@
     color: var(--color-accent);
   }
 
-  .caption-list {
-    list-style: none;
-    margin: var(--space-6) 0 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-
-  .caption-list li {
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-4);
-  }
-
-  .caption-list label {
-    display: block;
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
-    margin-bottom: var(--space-2);
-  }
-
-  .caption-list textarea {
-    width: 100%;
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    font-family: inherit;
-  }
-
-  .caption-actions {
-    display: flex;
-    gap: var(--space-4);
-    align-items: center;
-    margin-top: var(--space-3);
-  }
-
-  .caption-actions button {
+  .link-danger {
     background: none;
     border: none;
-    color: var(--color-accent);
-    font-size: var(--font-size-sm);
+    color: var(--color-danger);
+    font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     padding: 0;
-  }
-
-  .link-danger {
-    color: var(--color-danger) !important;
   }
 </style>

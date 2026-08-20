@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import type { Request, Response } from 'express';
-import type { UpdatePhotoInput } from '@portfolio/shared';
 import { Album, Media, Photo } from '../models/index.js';
 import { env } from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
@@ -41,7 +40,6 @@ export const addPhotos = asyncHandler(async (req: Request, res: Response) => {
     const photo = await Photo.create({
       album: album.id,
       image: media.id,
-      caption: '',
       order: nextOrder,
     });
     nextOrder += 1;
@@ -49,16 +47,6 @@ export const addPhotos = asyncHandler(async (req: Request, res: Response) => {
   }
 
   sendSuccess(res, created, 201);
-});
-
-export const updatePhoto = asyncHandler(async (req: Request, res: Response) => {
-  const input = req.body as UpdatePhotoInput;
-  const photo = await Photo.findByIdAndUpdate(req.params.id, input, {
-    new: true,
-    runValidators: true,
-  }).populate('image');
-  if (!photo) throw ApiError.notFound('Photo');
-  sendSuccess(res, photo);
 });
 
 export const deletePhoto = asyncHandler(async (req: Request, res: Response) => {

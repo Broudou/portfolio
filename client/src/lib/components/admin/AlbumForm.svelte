@@ -1,8 +1,7 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import type { Album, Media } from '@portfolio/shared';
+  import type { Album, Photo } from '@portfolio/shared';
   import FormField from './FormField.svelte';
-  import MediaPicker from './MediaPicker.svelte';
   import { toastStore } from '$lib/stores/toast.svelte.js';
   import { populated } from '$lib/utils/populated.js';
 
@@ -12,14 +11,14 @@
 
   interface Props {
     album?: Album;
-    media: Media[];
+    photos?: Photo[];
     errors?: FormErrors;
     message?: string;
     submitLabel?: string;
     action?: string;
   }
 
-  let { album, media, errors, message, submitLabel = 'Save album', action }: Props = $props();
+  let { album, photos = [], errors, message, submitLabel = 'Save album', action }: Props = $props();
 
   let coverId = $state<string | null>(populated(album?.cover)?.id ?? null);
   let submitting = $state(false);
@@ -49,7 +48,27 @@
     <textarea id="description" name="description" rows="3">{album?.description ?? ''}</textarea>
   </FormField>
 
-  <MediaPicker id="cover" label="Cover image" bind:value={coverId} {media} />
+  <div class="cover-picker">
+    <span class="picker-label">Cover photo</span>
+    <input type="hidden" name="cover" value={coverId ?? ''} />
+    {#if photos.length === 0}
+      <p class="hint">Add photos below, then come back here to choose a cover.</p>
+    {:else}
+      <div class="cover-grid">
+        {#each photos as photo (photo.id)}
+          {@const image = populated(photo.image)}
+          <button
+            type="button"
+            class="cover-thumb"
+            class:selected={image && coverId === image.id}
+            onclick={() => (coverId = image?.id ?? null)}
+          >
+            {#if image}<img src={image.url} alt={image.altText} />{/if}
+          </button>
+        {/each}
+      </div>
+    {/if}
+  </div>
 
   <div class="row">
     <label class="checkbox">
@@ -88,6 +107,52 @@
     border-radius: var(--radius-md);
     padding: var(--space-4);
     margin: var(--space-2) 0 var(--space-5);
+  }
+
+  .cover-picker {
+    margin-bottom: var(--space-5);
+  }
+
+  .picker-label {
+    display: block;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-2);
+  }
+
+  .hint {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    margin: 0;
+  }
+
+  .cover-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: var(--space-2);
+  }
+
+  .cover-thumb {
+    aspect-ratio: 1;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .cover-thumb:hover {
+    border-color: var(--color-accent);
+  }
+
+  .cover-thumb.selected {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-accent-subtle);
+  }
+
+  .cover-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   legend {

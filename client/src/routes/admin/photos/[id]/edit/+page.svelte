@@ -19,7 +19,7 @@
   {#key data.album.id}
     <AlbumForm
       album={data.album}
-      media={data.media}
+      photos={data.photos}
       errors={form?.errors}
       message={form?.message}
       submitLabel="Save changes"

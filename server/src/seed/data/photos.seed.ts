@@ -12,7 +12,7 @@ interface AlbumSpec {
   accent: string;
   status: 'draft' | 'published';
   featured: boolean;
-  photos: { caption: string }[];
+  photoCount: number;
 }
 
 /** Pastel/accent pairings pulled from the design token palette (tokens.css). */
@@ -24,11 +24,7 @@ const ALBUMS: AlbumSpec[] = [
     accent: '#C2410C',
     status: 'published',
     featured: true,
-    photos: [
-      { caption: 'Sunrise start on the ridge loop.' },
-      { caption: 'Fog rolling through the valley at mile six.' },
-      { caption: 'Post-run coffee at the trailhead.' },
-    ],
+    photoCount: 3,
   },
   {
     title: 'Film Photography',
@@ -37,12 +33,7 @@ const ALBUMS: AlbumSpec[] = [
     accent: '#C2410C',
     status: 'published',
     featured: true,
-    photos: [
-      { caption: 'Kodak Gold, overexposed by a stop on purpose.' },
-      { caption: 'Late afternoon light through the kitchen window.' },
-      { caption: 'Self-portrait, first roll of the year.' },
-      { caption: 'Contact sheet from the coast trip.' },
-    ],
+    photoCount: 4,
   },
   {
     title: 'Home Studio Pottery',
@@ -51,10 +42,7 @@ const ALBUMS: AlbumSpec[] = [
     accent: '#C2410C',
     status: 'draft',
     featured: false,
-    photos: [
-      { caption: 'First bowl that survived the kiln.' },
-      { caption: 'Testing a new celadon glaze recipe.' },
-    ],
+    photoCount: 2,
   },
 ];
 
@@ -63,35 +51,19 @@ export async function seedPhotos(uploadedBy: string): Promise<void> {
 
   for (const [albumIndex, spec] of ALBUMS.entries()) {
     const albumKey = slugify(spec.title);
-    const coverFilename = `seed-album-${albumKey}-cover.svg`;
-    const coverSvg = generatePlaceholderSvg({
-      label: spec.title,
-      background: spec.background,
-      accent: spec.accent,
-    });
-    await fs.writeFile(path.join(env.UPLOAD_DIR, coverFilename), coverSvg, 'utf-8');
-    const cover = await Media.create({
-      filename: coverFilename,
-      url: `/uploads/${coverFilename}`,
-      mimeType: 'image/svg+xml',
-      sizeBytes: Buffer.byteLength(coverSvg, 'utf-8'),
-      altText: `Cover image for the ${spec.title} album`,
-      width: 1200,
-      height: 800,
-      uploadedBy,
-    });
 
     const album = await Album.create({
       title: spec.title,
       slug: albumKey,
       description: spec.description,
-      cover: cover.id,
       status: spec.status,
       featured: spec.featured,
       order: albumIndex,
     });
 
-    for (const [photoIndex, photoSpec] of spec.photos.entries()) {
+    let coverImageId: string | null = null;
+
+    for (let photoIndex = 0; photoIndex < spec.photoCount; photoIndex += 1) {
       const photoFilename = `seed-album-${albumKey}-photo-${photoIndex + 1}.svg`;
       const photoSvg = generatePlaceholderSvg({
         label: `${spec.title} #${photoIndex + 1}`,
@@ -104,7 +76,7 @@ export async function seedPhotos(uploadedBy: string): Promise<void> {
         url: `/uploads/${photoFilename}`,
         mimeType: 'image/svg+xml',
         sizeBytes: Buffer.byteLength(photoSvg, 'utf-8'),
-        altText: photoSpec.caption,
+        altText: `${spec.title} photo ${photoIndex + 1}`,
         width: 1200,
         height: 800,
         uploadedBy,
@@ -113,9 +85,14 @@ export async function seedPhotos(uploadedBy: string): Promise<void> {
       await Photo.create({
         album: album.id,
         image: media.id,
-        caption: photoSpec.caption,
         order: photoIndex,
       });
+
+      if (photoIndex === 0) coverImageId = media.id;
+    }
+
+    if (coverImageId) {
+      await Album.updateOne({ _id: album.id }, { $set: { cover: coverImageId } });
     }
   }
 }

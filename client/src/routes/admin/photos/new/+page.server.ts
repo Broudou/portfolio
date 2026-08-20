@@ -1,15 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { createAlbumSchema } from '@portfolio/shared';
-import type { Actions, PageServerLoad } from './$types.js';
+import type { Actions } from './$types.js';
 import { createAlbum } from '$lib/api/albums.js';
-import { listMedia } from '$lib/api/media.js';
 import { parseAlbumForm } from '$lib/server/parseAlbumForm.js';
 import { ApiClientError } from '$lib/api/client.js';
-
-export const load: PageServerLoad = async ({ locals }) => {
-  const mediaResult = await listMedia(locals.token!, { limit: 100 });
-  return { media: mediaResult.items };
-};
 
 export const actions: Actions = {
   default: async ({ request, locals }) => {

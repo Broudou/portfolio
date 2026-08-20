@@ -16,7 +16,7 @@
 
 <div class="admin-body">
   <p class="hint">Save the album first, then add photos to it on the next screen.</p>
-  <AlbumForm media={data.media} errors={form?.errors} message={form?.message} submitLabel="Create album" />
+  <AlbumForm errors={form?.errors} message={form?.message} submitLabel="Create album" />
 </div>
 
 <style>

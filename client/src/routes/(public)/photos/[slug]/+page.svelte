@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
-  import PhotoCarousel from '$lib/components/content/PhotoCarousel.svelte';
+  import PhotoFeed from '$lib/components/content/PhotoFeed.svelte';
   import EmptyState from '$lib/components/ui/EmptyState.svelte';
   import { resolveSeo } from '$lib/utils/seo.js';
   import { breadcrumbJsonLd } from '$lib/utils/jsonld.js';
@@ -41,7 +41,7 @@
   jsonLd={breadcrumbs}
 />
 
-<article class="container page">
+<div class="container header-wrap">
   <a href="/photos" class="back">← All photos</a>
 
   <header class="page-header">
@@ -50,17 +50,19 @@
       <p class="description">{album.description}</p>
     {/if}
   </header>
+</div>
 
-  {#if data.photos.length === 0}
+{#if data.photos.length === 0}
+  <div class="container">
     <EmptyState title="No photos yet" description="Check back soon for photos in this album." />
-  {:else}
-    <PhotoCarousel photos={data.photos} />
-  {/if}
-</article>
+  </div>
+{:else}
+  <PhotoFeed photos={data.photos} />
+{/if}
 
 <style>
-  .page {
-    padding-block: var(--space-8) var(--space-9);
+  .header-wrap {
+    padding-block: var(--space-8) var(--space-6);
   }
 
   .back {
@@ -72,7 +74,6 @@
   }
 
   .page-header {
-    margin-bottom: var(--space-6);
     max-width: var(--prose-max-width);
   }
 

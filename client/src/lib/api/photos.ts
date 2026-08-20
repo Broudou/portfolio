@@ -1,4 +1,4 @@
-import type { ApiResponse, Photo, UpdatePhotoInput } from '@portfolio/shared';
+import type { ApiResponse, Photo } from '@portfolio/shared';
 import { API_BASE_URL } from '$lib/server/config.js';
 import { apiFetch, ApiClientError } from './client.js';
 
@@ -22,10 +22,6 @@ export async function addPhotos(token: string, albumId: string, files: File[]): 
     throw new ApiClientError(response.status, json.error.code, json.error.message, json.error.details);
   }
   return json.data;
-}
-
-export function updatePhoto(token: string, id: string, payload: UpdatePhotoInput): Promise<Photo> {
-  return apiFetch<Photo>(`/photos/${id}`, { method: 'PATCH', token, body: payload });
 }
 
 export function deletePhoto(token: string, id: string): Promise<{ deleted: boolean }> {

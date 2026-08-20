@@ -17,9 +17,6 @@
   <div class="scrim"></div>
   <div class="content">
     <h3>{album.title}</h3>
-    {#if album.description}
-      <p class="description">{album.description}</p>
-    {/if}
   </div>
 </a>
 
@@ -58,16 +55,12 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(1);
     transform: scale(1);
-    transition:
-      filter var(--duration-slow) var(--easing-standard),
-      transform var(--duration-slow) var(--easing-standard);
+    transition: transform var(--duration-slow) var(--easing-standard);
   }
 
   .interactive:hover .cover,
   .interactive:focus-visible .cover {
-    filter: grayscale(0);
     transform: scale(1.05);
   }
 
@@ -75,7 +68,7 @@
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: linear-gradient(to top, rgba(28, 25, 23, 0.85), rgba(28, 25, 23, 0.25) 60%, rgba(28, 25, 23, 0.1));
+    background: linear-gradient(to top, rgba(28, 25, 23, 0.65), rgba(28, 25, 23, 0.05) 45%, transparent 70%);
   }
 
   .content {
@@ -87,15 +80,8 @@
   }
 
   h3 {
-    margin-bottom: var(--space-2);
+    margin: 0;
     font-size: var(--font-size-lg);
     color: var(--color-text-inverse);
-  }
-
-  .description {
-    color: var(--color-text-inverse);
-    opacity: 0.85;
-    margin: 0;
-    max-width: 60ch;
   }
 </style>

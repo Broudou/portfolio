@@ -167,7 +167,6 @@ export interface Album extends BaseEntity {
 export interface Photo extends BaseEntity {
   album: Album | string;
   image: Media | string;
-  caption?: string;
   order: number;
 }
 

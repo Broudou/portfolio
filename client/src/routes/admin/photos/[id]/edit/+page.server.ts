@@ -2,28 +2,25 @@ import { error, fail } from '@sveltejs/kit';
 import { updateAlbumSchema } from '@portfolio/shared';
 import type { Actions, PageServerLoad } from './$types.js';
 import { listAlbums, updateAlbum } from '$lib/api/albums.js';
-import { listMedia } from '$lib/api/media.js';
 import {
   addPhotos as addPhotosApi,
   deletePhoto as deletePhotoApi,
   listPhotosByAlbum,
   reorderPhotos as reorderPhotosApi,
-  updatePhoto,
 } from '$lib/api/photos.js';
 import { parseAlbumForm } from '$lib/server/parseAlbumForm.js';
 import { ApiClientError } from '$lib/api/client.js';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
-  const [albumsResult, mediaResult, photos] = await Promise.all([
+  const [albumsResult, photos] = await Promise.all([
     listAlbums({ token: locals.token, limit: 100 }),
-    listMedia(locals.token!, { limit: 100 }),
     listPhotosByAlbum(params.id, locals.token),
   ]);
 
   const album = albumsResult.items.find((item) => item.id === params.id);
   if (!album) throw error(404, 'Album not found');
 
-  return { album, media: mediaResult.items, photos };
+  return { album, photos };
 };
 
 export const actions: Actions = {
@@ -55,21 +52,6 @@ export const actions: Actions = {
 
     try {
       await addPhotosApi(locals.token!, params.id, files);
-    } catch (err) {
-      if (err instanceof ApiClientError) return fail(err.status, { message: err.message });
-      throw err;
-    }
-
-    return { success: true };
-  },
-
-  updateCaption: async ({ request, locals }) => {
-    const formData = await request.formData();
-    const id = String(formData.get('id'));
-    const caption = String(formData.get('caption') ?? '');
-
-    try {
-      await updatePhoto(locals.token!, id, { caption });
     } catch (err) {
       if (err instanceof ApiClientError) return fail(err.status, { message: err.message });
       throw err;
