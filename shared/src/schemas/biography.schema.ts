@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { objectId, seoMetaSchema } from './common.js';
+import { backgroundMediaSchema, objectId, seoMetaSchema } from './common.js';
 
 export const updateBiographySchema = z.object({
   fullName: z.string().min(1).max(120),
@@ -10,6 +10,7 @@ export const updateBiographySchema = z.object({
   location: z.string().max(120).optional(),
   skills: z.array(z.string().min(1).max(60)).default([]),
   highlights: z.array(z.string().min(1).max(200)).default([]),
+  background: backgroundMediaSchema.default({ type: 'none', media: null }),
   seo: seoMetaSchema.optional(),
 });
 

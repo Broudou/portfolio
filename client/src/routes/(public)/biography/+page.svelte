@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
   import Hero from '$lib/components/content/Hero.svelte';
+  import HeroBackground from '$lib/components/content/HeroBackground.svelte';
   import MarkdownRenderer from '$lib/components/content/MarkdownRenderer.svelte';
   import { populated } from '$lib/utils/populated.js';
   import { resolveSeo } from '$lib/utils/seo.js';
@@ -16,6 +17,7 @@
 
   const siteUrl = $derived(page.url.origin);
   const avatar = $derived(populated(data.biography.avatar));
+  const hasBackground = data.hasHeroBackground;
   const seo = $derived(
     resolveSeo(
       siteUrl,
@@ -38,13 +40,32 @@
   jsonLd={personJsonLd(siteUrl, data.biography, avatar?.url)}
 />
 
+{#if hasBackground}
+  <HeroBackground background={data.biography.background}>
+    <div class="hero-wrap">
+      <Hero
+        fullName={data.biography.fullName}
+        headline={data.biography.headline}
+        summary={data.biography.summary}
+        {avatar}
+        variant="overlay"
+      />
+      {#if data.biography.location}
+        <p class="location overlay">{data.biography.location}</p>
+      {/if}
+    </div>
+  </HeroBackground>
+{/if}
+
 <article class="container page">
-  <div class="hero-wrap">
-    <Hero fullName={data.biography.fullName} headline={data.biography.headline} summary={data.biography.summary} {avatar} />
-    {#if data.biography.location}
-      <p class="location">{data.biography.location}</p>
-    {/if}
-  </div>
+  {#if !hasBackground}
+    <div class="hero-wrap">
+      <Hero fullName={data.biography.fullName} headline={data.biography.headline} summary={data.biography.summary} {avatar} />
+      {#if data.biography.location}
+        <p class="location">{data.biography.location}</p>
+      {/if}
+    </div>
+  {/if}
 
   {#if data.biography.skills.length > 0}
     <ul class="skills">
@@ -81,6 +102,12 @@
     color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
     margin: var(--space-2) 0 0;
+  }
+
+  .location.overlay {
+    color: inherit;
+    opacity: 0.9;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
 
   .skills {

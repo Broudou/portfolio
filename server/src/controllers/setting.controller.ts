@@ -17,15 +17,16 @@ export const SETTINGS_DEFAULTS: Partial<SettingDocument> = {
     { type: 'featuredArticles', enabled: true, order: 1, limit: 3 },
     { type: 'photos', enabled: true, order: 2, limit: 3 },
   ],
+  homeBackground: { type: 'none', media: null },
 };
 
 export const getSettings = asyncHandler(async (_req: Request, res: Response) => {
-  const settings = await getOrCreateSingleton(Setting, SETTINGS_DEFAULTS);
+  const settings = await getOrCreateSingleton(Setting, SETTINGS_DEFAULTS, 'homeBackground.media');
   sendSuccess(res, settings.toJSON());
 });
 
 export const updateSettings = asyncHandler(async (req: Request, res: Response) => {
   const patch = req.body as UpdateSettingInput;
-  const settings = await updateSingleton(Setting, patch);
+  const settings = await updateSingleton(Setting, patch, 'homeBackground.media');
   sendSuccess(res, settings.toJSON());
 });

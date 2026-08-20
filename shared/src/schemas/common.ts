@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { BACKGROUND_MEDIA_TYPES } from '../constants/enums.js';
 
 /** Matches a Mongo ObjectId (24 hex chars). Used to validate ref fields. */
 export const objectId = z.string().regex(/^[a-f\d]{24}$/i, 'Must be a valid id');
@@ -14,4 +15,10 @@ export const seoMetaSchema = z.object({
   title: z.string().max(70).optional(),
   description: z.string().max(160).optional(),
   ogImage: objectId.nullish(),
+});
+
+/** Background media config for a hero banner (Home, Biography). */
+export const backgroundMediaSchema = z.object({
+  type: z.enum(BACKGROUND_MEDIA_TYPES).default('none'),
+  media: objectId.nullish(),
 });

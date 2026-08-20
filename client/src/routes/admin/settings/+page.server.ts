@@ -2,11 +2,15 @@ import { fail } from '@sveltejs/kit';
 import { HOMEPAGE_SECTION_TYPES, SOCIAL_PLATFORMS, updateSettingSchema } from '@portfolio/shared';
 import type { Actions, PageServerLoad } from './$types.js';
 import { getSettings, updateSettings } from '$lib/api/settings.js';
+import { listMedia } from '$lib/api/media.js';
 import { ApiClientError } from '$lib/api/client.js';
 
-export const load: PageServerLoad = async () => {
-  const settings = await getSettings();
-  return { settings };
+export const load: PageServerLoad = async ({ locals }) => {
+  const [settings, mediaResult] = await Promise.all([
+    getSettings(),
+    listMedia(locals.token!, { limit: 100 }),
+  ]);
+  return { settings, media: mediaResult.items };
 };
 
 export const actions: Actions = {
@@ -37,6 +41,10 @@ export const actions: Actions = {
         twitterHandle: formData.get('twitterHandle') || undefined,
       },
       homepageSections,
+      homeBackground: {
+        type: formData.get('homeBackgroundType') || 'none',
+        media: formData.get('homeBackgroundMedia') || null,
+      },
     };
 
     const parsed = updateSettingSchema.safeParse(raw);

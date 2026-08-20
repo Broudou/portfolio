@@ -44,5 +44,6 @@ export const load: PageServerLoad = async ({ parent }) => {
     featuredAlbums: albumsResult.items
       .filter((album) => album.featured)
       .slice(0, sectionLimit('photos', 3)),
+    hasHeroBackground: settings.homeBackground.type !== 'none' && !!settings.homeBackground.media,
   };
 };

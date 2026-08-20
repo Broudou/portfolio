@@ -7,12 +7,13 @@
     id: string;
     label: string;
     media: Media[];
+    accept?: string;
+    maxSizeMB?: number;
   }
 
-  let { value = $bindable(), id, label, media }: Props = $props();
+  let { value = $bindable(), id, label, media, accept = 'image/*', maxSizeMB = 5 }: Props = $props();
 
-  const MAX_FILE_SIZE_MB = 5;
-  const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+  const MAX_FILE_SIZE_BYTES = $derived(maxSizeMB * 1024 * 1024);
 
   let localMedia = $state<Media[]>(media);
   let dialogEl: HTMLDialogElement;
@@ -39,7 +40,7 @@
     const input = event.currentTarget as HTMLInputElement;
     const file = input.files?.[0];
     if (file && file.size > MAX_FILE_SIZE_BYTES) {
-      uploadError = `Image is too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Max size is ${MAX_FILE_SIZE_MB} MB.`;
+      uploadError = `File is too large (${(file.size / (1024 * 1024)).toFixed(1)} MB). Max size is ${maxSizeMB} MB.`;
       input.value = '';
     } else {
       uploadError = null;
@@ -53,27 +54,35 @@
 
   <div class="preview">
     {#if selected}
-      <img src={selected.url} alt={selected.altText} />
+      {#if selected.mimeType.startsWith('video/')}
+        <video src={selected.url} muted playsinline preload="metadata"></video>
+      {:else}
+        <img src={selected.url} alt={selected.altText} />
+      {/if}
     {:else}
-      <div class="placeholder" aria-hidden="true">No image selected</div>
+      <div class="placeholder" aria-hidden="true">No file selected</div>
     {/if}
   </div>
 
   <div class="actions">
-    <button type="button" onclick={openPicker} aria-describedby="{id}-label">Choose image</button>
+    <button type="button" onclick={openPicker} aria-describedby="{id}-label">Choose file</button>
     {#if selected}
       <button type="button" class="ghost" onclick={clearSelection}>Remove</button>
     {/if}
   </div>
 </div>
 
-<dialog bind:this={dialogEl} class="picker-dialog" aria-label="Choose an image">
+<dialog bind:this={dialogEl} class="picker-dialog" aria-label="Choose a file">
   <h2>Media library</h2>
 
   <div class="grid">
     {#each localMedia as item (item.id)}
       <button type="button" class="thumb" onclick={() => choose(item.id)}>
-        <img src={item.url} alt={item.altText} loading="lazy" />
+        {#if item.mimeType.startsWith('video/')}
+          <video src={item.url} muted playsinline preload="metadata"></video>
+        {:else}
+          <img src={item.url} alt={item.altText} loading="lazy" />
+        {/if}
       </button>
     {/each}
   </div>
@@ -101,8 +110,8 @@
   >
     <h3>Upload new</h3>
     <label for="{id}-file" class="visually-hidden">Choose a file</label>
-    <input id="{id}-file" type="file" name="file" accept="image/*" required onchange={handleFileChange} />
-    <p class="hint">Max size {MAX_FILE_SIZE_MB} MB.</p>
+    <input id="{id}-file" type="file" name="file" {accept} required onchange={handleFileChange} />
+    <p class="hint">Max size {maxSizeMB} MB.</p>
     <label for="{id}-alt" class="visually-hidden">Alt text</label>
     <input id="{id}-alt" type="text" name="altText" placeholder="Alt text (required)" required />
     <button type="submit" disabled={uploading || !!uploadError}>{uploading ? 'Uploading…' : 'Upload'}</button>
@@ -133,7 +142,8 @@
     margin-bottom: var(--space-2);
   }
 
-  .preview img {
+  .preview img,
+  .preview video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -204,7 +214,8 @@
     border-color: var(--color-accent);
   }
 
-  .thumb img {
+  .thumb img,
+  .thumb video {
     width: 100%;
     height: 100%;
     object-fit: cover;

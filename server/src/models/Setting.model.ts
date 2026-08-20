@@ -1,5 +1,5 @@
 import { Schema, model, type InferSchemaType } from 'mongoose';
-import { HOMEPAGE_SECTION_TYPES, SOCIAL_PLATFORMS } from '@portfolio/shared';
+import { BACKGROUND_MEDIA_TYPES, HOMEPAGE_SECTION_TYPES, SOCIAL_PLATFORMS } from '@portfolio/shared';
 import { toJSONPlugin } from './plugins/toJSON.plugin.js';
 
 const socialLinkSchema = new Schema(
@@ -30,6 +30,14 @@ const homepageSectionSchema = new Schema(
   { _id: false },
 );
 
+const homeBackgroundSchema = new Schema(
+  {
+    type: { type: String, enum: BACKGROUND_MEDIA_TYPES, default: 'none' },
+    media: { type: Schema.Types.ObjectId, ref: 'Media', default: null },
+  },
+  { _id: false },
+);
+
 /** Singleton document — same `singletonKey` pattern as Biography. */
 const settingSchema = new Schema(
   {
@@ -47,6 +55,7 @@ const settingSchema = new Schema(
     socialLinks: { type: [socialLinkSchema], default: [] },
     seoDefaults: { type: seoDefaultsSchema, required: true },
     homepageSections: { type: [homepageSectionSchema], default: [] },
+    homeBackground: { type: homeBackgroundSchema, default: () => ({}) },
   },
   { timestamps: true },
 );

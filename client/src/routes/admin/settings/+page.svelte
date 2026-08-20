@@ -3,7 +3,9 @@
   import { SOCIAL_PLATFORMS, HOMEPAGE_SECTION_TYPES } from '@portfolio/shared';
   import AdminHeader from '$lib/components/admin/AdminHeader.svelte';
   import FormField from '$lib/components/admin/FormField.svelte';
+  import MediaPicker from '$lib/components/admin/MediaPicker.svelte';
   import { toastStore } from '$lib/stores/toast.svelte.js';
+  import { populated } from '$lib/utils/populated.js';
   import type { PageData } from './$types.js';
   import type { FormResult } from '$lib/types/formResult.js';
 
@@ -14,6 +16,9 @@
 
   let { data, form }: Props = $props();
   let saving = $state(false);
+
+  let homeBackgroundType = $state(data.settings.homeBackground.type);
+  let homeBackgroundMediaId = $state<string | null>(populated(data.settings.homeBackground.media)?.id ?? null);
 
   const PLATFORM_LABEL: Record<string, string> = {
     github: 'GitHub',
@@ -126,6 +131,27 @@
           </label>
         </div>
       {/each}
+    </fieldset>
+
+    <fieldset>
+      <legend>Home background</legend>
+      <FormField label="Background type" id="homeBackgroundType" hint="Shown as a hero banner behind the top bar on the homepage.">
+        <select id="homeBackgroundType" name="homeBackgroundType" bind:value={homeBackgroundType}>
+          <option value="none">None</option>
+          <option value="image">Image</option>
+          <option value="video">Video</option>
+        </select>
+      </FormField>
+      {#if homeBackgroundType !== 'none'}
+        <MediaPicker
+          id="homeBackgroundMedia"
+          label={homeBackgroundType === 'video' ? 'Background video' : 'Background image'}
+          bind:value={homeBackgroundMediaId}
+          media={data.media}
+          accept={homeBackgroundType === 'video' ? 'video/*' : 'image/*'}
+          maxSizeMB={homeBackgroundType === 'video' ? 60 : 5}
+        />
+      {/if}
     </fieldset>
 
     {#if form?.message}<p class="error">{form.message}</p>{/if}

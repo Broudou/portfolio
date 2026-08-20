@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
+  import HeroBackground from '$lib/components/content/HeroBackground.svelte';
   import ProjectListItem from '$lib/components/content/ProjectListItem.svelte';
   import ArticleListItem from '$lib/components/content/ArticleListItem.svelte';
   import AlbumListItem from '$lib/components/content/AlbumListItem.svelte';
@@ -25,6 +26,15 @@
   twitterHandle={seo.twitterHandle}
   type="profile"
 />
+
+{#if data.hasHeroBackground}
+  <HeroBackground background={data.settings.homeBackground}>
+    <div class="home-hero-text">
+      <h1>{data.settings.siteTitle}</h1>
+      <p>{data.settings.tagline}</p>
+    </div>
+  </HeroBackground>
+{/if}
 
 {#if data.featuredArticles.length > 0}
   <section class="container section" aria-label="Latest writing">
@@ -60,6 +70,22 @@
 {/if}
 
 <style>
+  .home-hero-text {
+    text-align: center;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .home-hero-text h1 {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .home-hero-text p {
+    font-size: var(--font-size-lg);
+    opacity: 0.9;
+    margin: 0;
+  }
+
   .section {
     padding-block: var(--space-7);
   }

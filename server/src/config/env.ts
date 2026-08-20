@@ -26,7 +26,7 @@ const envSchema = z.object({
     ),
 
   UPLOAD_DIR: z.string().default('uploads'),
-  MAX_UPLOAD_SIZE_MB: z.coerce.number().positive().default(8),
+  MAX_UPLOAD_SIZE_MB: z.coerce.number().positive().default(60),
 
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.coerce.number().int().positive().optional(),

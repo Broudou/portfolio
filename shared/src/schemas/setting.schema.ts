@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { HOMEPAGE_SECTION_TYPES, SOCIAL_PLATFORMS } from '../constants/enums.js';
-import { objectId } from './common.js';
+import { backgroundMediaSchema, objectId } from './common.js';
 
 const socialLinkSchema = z.object({
   platform: z.enum(SOCIAL_PLATFORMS),
@@ -29,6 +29,7 @@ export const updateSettingSchema = z.object({
   socialLinks: z.array(socialLinkSchema).default([]),
   seoDefaults: seoDefaultsSchema,
   homepageSections: z.array(homepageSectionSchema).default([]),
+  homeBackground: backgroundMediaSchema.default({ type: 'none', media: null }),
 });
 
 export type UpdateSettingInput = z.infer<typeof updateSettingSchema>;

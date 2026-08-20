@@ -9,6 +9,7 @@
  */
 
 import type {
+  BackgroundMediaType,
   CategoryAppliesTo,
   ContentStatus,
   HomepageSectionType,
@@ -28,6 +29,12 @@ export interface SeoMeta {
   title?: string;
   description?: string;
   ogImage?: Media | string | null;
+}
+
+/** Background image/video config for a hero banner (Home, Biography). */
+export interface BackgroundMedia {
+  type: BackgroundMediaType;
+  media?: Media | string | null;
 }
 
 export interface Media extends BaseEntity {
@@ -58,6 +65,7 @@ export interface Biography extends BaseEntity {
   location?: string;
   skills: string[];
   highlights: string[];
+  background?: BackgroundMedia;
   seo?: SeoMeta;
 }
 
@@ -151,6 +159,7 @@ export interface Setting extends BaseEntity {
   socialLinks: SocialLink[];
   seoDefaults: SeoDefaults;
   homepageSections: HomepageSectionConfig[];
+  homeBackground: BackgroundMedia;
 }
 
 export interface Album extends BaseEntity {

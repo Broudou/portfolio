@@ -22,3 +22,6 @@ export type HomepageSectionType = (typeof HOMEPAGE_SECTION_TYPES)[number];
 
 export const SOCIAL_PLATFORMS = ['github', 'linkedin', 'x', 'mastodon', 'rss', 'email'] as const;
 export type SocialPlatform = (typeof SOCIAL_PLATFORMS)[number];
+
+export const BACKGROUND_MEDIA_TYPES = ['none', 'image', 'video'] as const;
+export type BackgroundMediaType = (typeof BACKGROUND_MEDIA_TYPES)[number];

@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { NavigationItem } from '@portfolio/shared';
+  import { pageChrome } from '$lib/stores/pageChrome.svelte.js';
 
   interface Props {
     items: NavigationItem[];
@@ -8,6 +9,11 @@
 
   let { items, currentPath }: Props = $props();
   let menuOpen = $state(false);
+  let headerHeight = $state(0);
+
+  $effect(() => {
+    pageChrome.setNavHeight(headerHeight);
+  });
 
   function isActive(path: string): boolean {
     if (path === '/') return currentPath === '/';
@@ -25,7 +31,7 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<header class="site-header">
+<header class="site-header" class:transparent={pageChrome.navTransparent} bind:clientHeight={headerHeight}>
   <div class="container bar">
     <button
       class="menu-toggle"
@@ -68,9 +74,30 @@
   .site-header {
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 100;
+    transition:
+      background-color var(--duration-base) var(--easing-standard),
+      border-color var(--duration-base) var(--easing-standard);
+  }
+
+  .site-header.transparent {
+    background: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .site-header.transparent nav a,
+  .site-header.transparent .menu-toggle {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  .site-header.transparent nav a[aria-current='page'] {
+    color: #ffffff;
+    border-bottom-color: #ffffff;
   }
 
   .bar {

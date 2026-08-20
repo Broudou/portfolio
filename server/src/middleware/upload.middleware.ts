@@ -10,6 +10,9 @@ const ALLOWED_MIME_TYPES = new Set([
   'image/webp',
   'image/svg+xml',
   'image/gif',
+  'video/mp4',
+  'video/webm',
+  'video/ogg',
 ]);
 
 const storage = multer.diskStorage({

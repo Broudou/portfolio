@@ -6,12 +6,13 @@
     headline: string;
     summary: string;
     avatar?: Media | null;
+    variant?: 'default' | 'overlay';
   }
 
-  let { fullName, headline, summary, avatar = null }: Props = $props();
+  let { fullName, headline, summary, avatar = null, variant = 'default' }: Props = $props();
 </script>
 
-<div class="hero-inner">
+<div class="hero-inner" class:overlay={variant === 'overlay'}>
   {#if avatar}
     <img src={avatar.url} alt={avatar.altText} class="avatar" width="96" height="96" />
   {:else}
@@ -62,6 +63,18 @@
   .summary {
     max-width: 60ch;
     margin-bottom: 0;
+  }
+
+  .hero-inner.overlay .headline,
+  .hero-inner.overlay .summary {
+    color: inherit;
+    opacity: 0.9;
+  }
+
+  .hero-inner.overlay h1,
+  .hero-inner.overlay .headline,
+  .hero-inner.overlay .summary {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
 
   @media (max-width: 640px) {

@@ -12,15 +12,18 @@ const DEFAULTS: Partial<BiographyDocument> = {
   bioMarkdown: 'Write your biography from the admin panel.',
   skills: [],
   highlights: [],
+  background: { type: 'none', media: null },
 };
 
+const POPULATE = ['avatar', 'background.media'];
+
 export const getBiography = asyncHandler(async (_req: Request, res: Response) => {
-  const biography = await getOrCreateSingleton(Biography, DEFAULTS, 'avatar');
+  const biography = await getOrCreateSingleton(Biography, DEFAULTS, POPULATE);
   sendSuccess(res, biography.toJSON());
 });
 
 export const updateBiography = asyncHandler(async (req: Request, res: Response) => {
   const patch = req.body as UpdateBiographyInput;
-  const biography = await updateSingleton(Biography, patch, 'avatar');
+  const biography = await updateSingleton(Biography, patch, POPULATE);
   sendSuccess(res, biography.toJSON());
 });

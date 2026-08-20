@@ -1,4 +1,5 @@
 import { Schema, model, type InferSchemaType } from 'mongoose';
+import { BACKGROUND_MEDIA_TYPES } from '@portfolio/shared';
 import { toJSONPlugin } from './plugins/toJSON.plugin.js';
 
 const seoSchema = new Schema(
@@ -6,6 +7,14 @@ const seoSchema = new Schema(
     title: { type: String, maxlength: 70 },
     description: { type: String, maxlength: 160 },
     ogImage: { type: Schema.Types.ObjectId, ref: 'Media', default: null },
+  },
+  { _id: false },
+);
+
+const backgroundSchema = new Schema(
+  {
+    type: { type: String, enum: BACKGROUND_MEDIA_TYPES, default: 'none' },
+    media: { type: Schema.Types.ObjectId, ref: 'Media', default: null },
   },
   { _id: false },
 );
@@ -26,6 +35,7 @@ const biographySchema = new Schema(
     location: { type: String, trim: true, maxlength: 120 },
     skills: { type: [String], default: [] },
     highlights: { type: [String], default: [] },
+    background: { type: backgroundSchema, default: () => ({}) },
     seo: { type: seoSchema, default: () => ({}) },
   },
   { timestamps: true },

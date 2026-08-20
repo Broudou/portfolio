@@ -19,6 +19,9 @@
   let bioMarkdown = $state(data.biography.bioMarkdown);
   let avatarId = $state<string | null>(populated(data.biography.avatar)?.id ?? null);
   let saving = $state(false);
+
+  let backgroundType = $state(data.biography.background?.type ?? 'none');
+  let backgroundMediaId = $state<string | null>(populated(data.biography.background?.media)?.id ?? null);
 </script>
 
 <AdminHeader title="Biography" user={data.user} />
@@ -52,6 +55,24 @@
     </FormField>
 
     <MediaPicker id="avatar" label="Avatar" bind:value={avatarId} media={data.media} />
+
+    <FormField label="Background type" id="backgroundType" hint="Shown as a hero banner behind the top bar on the biography page.">
+      <select id="backgroundType" name="backgroundType" bind:value={backgroundType}>
+        <option value="none">None</option>
+        <option value="image">Image</option>
+        <option value="video">Video</option>
+      </select>
+    </FormField>
+    {#if backgroundType !== 'none'}
+      <MediaPicker
+        id="backgroundMedia"
+        label={backgroundType === 'video' ? 'Background video' : 'Background image'}
+        bind:value={backgroundMediaId}
+        media={data.media}
+        accept={backgroundType === 'video' ? 'video/*' : 'image/*'}
+        maxSizeMB={backgroundType === 'video' ? 60 : 5}
+      />
+    {/if}
 
     <MarkdownEditor id="bioMarkdown" label="Biography (Markdown)" bind:value={bioMarkdown} required />
     <input type="hidden" name="bioMarkdown" value={bioMarkdown} />

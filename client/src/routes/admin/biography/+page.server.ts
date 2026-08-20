@@ -33,6 +33,10 @@ export const actions: Actions = {
       avatar: formData.get('avatar') || null,
       skills: linesToArray(formData.get('skills')),
       highlights: linesToArray(formData.get('highlights')),
+      background: {
+        type: formData.get('backgroundType') || 'none',
+        media: formData.get('backgroundMedia') || null,
+      },
       seo: {
         title: formData.get('seoTitle') || undefined,
         description: formData.get('seoDescription') || undefined,
