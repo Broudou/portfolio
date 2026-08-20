@@ -52,17 +52,21 @@
   </header>
 </div>
 
-{#if data.photos.length === 0}
-  <div class="container">
+<div class="container feed-wrap">
+  {#if data.photos.length === 0}
     <EmptyState title="No photos yet" description="Check back soon for photos in this album." />
-  </div>
-{:else}
-  <PhotoFeed photos={data.photos} />
-{/if}
+  {:else}
+    <PhotoFeed photos={data.photos} />
+  {/if}
+</div>
 
 <style>
   .header-wrap {
     padding-block: var(--space-8) var(--space-6);
+  }
+
+  .feed-wrap {
+    padding-bottom: var(--space-9);
   }
 
   .back {
