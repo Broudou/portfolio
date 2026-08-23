@@ -28,51 +28,54 @@
 />
 
 {#if data.hasHeroBackground}
-  <HeroBackground background={data.settings.homeBackground}>
-    <div class="home-hero-text">
-      <h1>{data.settings.siteTitle}</h1>
-      <p>{data.settings.tagline}</p>
-    </div>
-  </HeroBackground>
+  <HeroBackground background={data.settings.homeBackground} />
+  <div class="home-hero-text container">
+    <h1>{data.settings.siteTitle}</h1>
+    <p>{data.settings.tagline}</p>
+  </div>
 {/if}
 
-{#if data.featuredArticles.length > 0}
-  <section class="container section" aria-label="Latest writing">
-    <h2 class="section-title">Latest Writing</h2>
-    <div class="list">
-      {#each data.featuredArticles as article (article.id)}
-        <ArticleListItem {article} />
-      {/each}
-    </div>
-  </section>
-{/if}
+<div class="content-panel">
+  {#if data.featuredArticles.length > 0}
+    <section class="container section" aria-label="Latest writing">
+      <h2 class="section-title">Latest Writing</h2>
+      <div class="list">
+        {#each data.featuredArticles as article (article.id)}
+          <ArticleListItem {article} />
+        {/each}
+      </div>
+    </section>
+  {/if}
 
-{#if data.featuredProjects.length > 0}
-  <section class="container section" aria-label="Featured projects">
-    <h2 class="section-title">Featured Projects</h2>
-    <div class="list">
-      {#each data.featuredProjects as project (project.id)}
-        <ProjectListItem {project} />
-      {/each}
-    </div>
-  </section>
-{/if}
+  {#if data.featuredProjects.length > 0}
+    <section class="container section" aria-label="Featured projects">
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="list">
+        {#each data.featuredProjects as project (project.id)}
+          <ProjectListItem {project} />
+        {/each}
+      </div>
+    </section>
+  {/if}
 
-{#if data.featuredAlbums.length > 0}
-  <section class="container section" aria-label="Photos">
-    <h2 class="section-title">Photos</h2>
-    <div class="list">
-      {#each data.featuredAlbums as album (album.id)}
-        <AlbumListItem {album} />
-      {/each}
-    </div>
-  </section>
-{/if}
+  {#if data.featuredAlbums.length > 0}
+    <section class="container section" aria-label="Photos">
+      <h2 class="section-title">Photos</h2>
+      <div class="list">
+        {#each data.featuredAlbums as album (album.id)}
+          <AlbumListItem {album} />
+        {/each}
+      </div>
+    </section>
+  {/if}
+</div>
 
 <style>
   .home-hero-text {
     text-align: center;
+    color: #ffffff;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    padding-block: var(--space-9) var(--space-8);
   }
 
   .home-hero-text h1 {
@@ -84,6 +87,12 @@
     font-size: var(--font-size-lg);
     opacity: 0.9;
     margin: 0;
+  }
+
+  /* Opaque so it reads normally once it scrolls up over the fixed
+     background (when active) — sections inside are otherwise unstyled here. */
+  .content-panel {
+    background: var(--color-bg);
   }
 
   .section {

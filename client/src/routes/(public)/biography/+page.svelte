@@ -41,61 +41,59 @@
 />
 
 {#if hasBackground}
-  <HeroBackground background={data.biography.background}>
-    <div class="hero-wrap">
-      <Hero
-        fullName={data.biography.fullName}
-        headline={data.biography.headline}
-        summary={data.biography.summary}
-        {avatar}
-        variant="overlay"
-      />
-      {#if data.biography.location}
-        <p class="location overlay">{data.biography.location}</p>
-      {/if}
-    </div>
-  </HeroBackground>
+  <HeroBackground background={data.biography.background} />
 {/if}
 
-<article class="container page">
-  {#if !hasBackground}
-    <div class="hero-wrap">
-      <Hero fullName={data.biography.fullName} headline={data.biography.headline} summary={data.biography.summary} {avatar} />
-      {#if data.biography.location}
-        <p class="location">{data.biography.location}</p>
-      {/if}
-    </div>
-  {/if}
+<div class="hero-section container">
+  <div class="hero-wrap">
+    <Hero
+      fullName={data.biography.fullName}
+      headline={data.biography.headline}
+      summary={data.biography.summary}
+      {avatar}
+      variant={hasBackground ? 'overlay' : 'default'}
+    />
+    {#if data.biography.location}
+      <p class="location" class:overlay={hasBackground}>{data.biography.location}</p>
+    {/if}
+  </div>
+</div>
 
-  {#if data.biography.skills.length > 0}
-    <ul class="skills">
-      {#each data.biography.skills as skill (skill)}
-        <li>{skill}</li>
-      {/each}
-    </ul>
-  {/if}
-
-  <MarkdownRenderer html={data.bioHtml} />
-
-  {#if data.biography.highlights.length > 0}
-    <section class="highlights">
-      <h2>Highlights</h2>
-      <ul>
-        {#each data.biography.highlights as highlight (highlight)}
-          <li>{highlight}</li>
+<div class="page">
+  <article class="container">
+    {#if data.biography.skills.length > 0}
+      <ul class="skills">
+        {#each data.biography.skills as skill (skill)}
+          <li>{skill}</li>
         {/each}
       </ul>
-    </section>
-  {/if}
-</article>
+    {/if}
+
+    <MarkdownRenderer html={data.bioHtml} />
+
+    {#if data.biography.highlights.length > 0}
+      <section class="highlights">
+        <h2>Highlights</h2>
+        <ul>
+          {#each data.biography.highlights as highlight (highlight)}
+            <li>{highlight}</li>
+          {/each}
+        </ul>
+      </section>
+    {/if}
+  </article>
+</div>
 
 <style>
-  .page {
-    padding-block: var(--space-8) var(--space-9);
+  /* Sits directly over the fixed background (when active) — no opaque
+     background of its own, unlike `.page` below. */
+  .hero-section {
+    padding-block: var(--space-8) var(--space-6);
   }
 
-  .hero-wrap {
-    margin-bottom: var(--space-6);
+  .page {
+    padding-block: 0 var(--space-9);
+    background: var(--color-bg);
   }
 
   .location {

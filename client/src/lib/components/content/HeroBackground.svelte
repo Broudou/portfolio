@@ -1,74 +1,38 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import type { BackgroundMedia } from '@portfolio/shared';
   import { populated } from '$lib/utils/populated.js';
-  import { pageChrome } from '$lib/stores/pageChrome.svelte.js';
 
   interface Props {
     background: BackgroundMedia | undefined;
-    children: Snippet;
   }
 
-  let { background, children }: Props = $props();
+  let { background }: Props = $props();
 
   const media = $derived(populated(background?.media));
   const isActive = $derived(!!background && background.type !== 'none' && !!media);
-
-  let rootEl: HTMLElement | undefined = $state();
   const prefersReducedMotion =
     typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function updateTransparency() {
-    if (!rootEl) return;
-    pageChrome.setNavTransparent(rootEl.getBoundingClientRect().bottom > pageChrome.navHeight);
-  }
-
-  $effect(() => {
-    if (!isActive) return;
-
-    updateTransparency();
-
-    window.addEventListener('scroll', updateTransparency, { passive: true });
-    window.addEventListener('resize', updateTransparency);
-
-    return () => {
-      window.removeEventListener('scroll', updateTransparency);
-      window.removeEventListener('resize', updateTransparency);
-      pageChrome.setNavTransparent(false);
-    };
-  });
 </script>
 
 {#if isActive && media}
-  <section class="hero-banner" bind:this={rootEl}>
+  <div class="fixed-background" aria-hidden="true">
     {#if background?.type === 'video'}
-      <video
-        class="bg-media"
-        src={media.url}
-        autoplay={!prefersReducedMotion}
-        muted
-        loop
-        playsinline
-        aria-hidden="true"
-      ></video>
+      <video class="bg-media" src={media.url} autoplay={!prefersReducedMotion} muted loop playsinline></video>
     {:else}
-      <img class="bg-media" src={media.url} alt="" aria-hidden="true" />
+      <img class="bg-media" src={media.url} alt="" />
     {/if}
-    <div class="scrim" aria-hidden="true"></div>
-    <div class="banner-content container">
-      {@render children()}
-    </div>
-  </section>
-{:else}
-  {@render children()}
+    <div class="scrim"></div>
+  </div>
 {/if}
 
 <style>
-  .hero-banner {
-    position: relative;
-    min-height: 70vh;
-    display: flex;
-    align-items: center;
+  /* Pinned behind the whole page (including the top bar) for as long as this
+     page is mounted — page content scrolls in the normal document flow on
+     top of it, the top bar stays transparent the whole time (see Nav.svelte). */
+  .fixed-background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     overflow: hidden;
   }
 
@@ -83,12 +47,6 @@
   .scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.55) 100%);
-  }
-
-  .banner-content {
-    position: relative;
-    z-index: 1;
-    color: #ffffff;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
   }
 </style>

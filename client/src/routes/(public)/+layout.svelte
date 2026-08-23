@@ -25,7 +25,7 @@
 </script>
 
 <SkipToContent />
-<Nav items={data.navigation} currentPath={page.url.pathname} />
+<Nav items={data.navigation} currentPath={page.url.pathname} hasBackground={heroActive} />
 
 <main id="main-content" tabindex="-1" style="padding-top: {heroActive ? 0 : pageChrome.navHeight}px">
   {@render children()}

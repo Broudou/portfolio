@@ -5,9 +5,10 @@
   interface Props {
     items: NavigationItem[];
     currentPath: string;
+    hasBackground?: boolean;
   }
 
-  let { items, currentPath }: Props = $props();
+  let { items, currentPath, hasBackground = false }: Props = $props();
   let menuOpen = $state(false);
   let headerHeight = $state(0);
 
@@ -31,7 +32,7 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<header class="site-header" class:transparent={pageChrome.navTransparent} bind:clientHeight={headerHeight}>
+<header class="site-header" class:transparent={hasBackground} bind:clientHeight={headerHeight}>
   <div class="container bar">
     <button
       class="menu-toggle"
