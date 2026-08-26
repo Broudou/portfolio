@@ -72,10 +72,16 @@
 
 <style>
   .home-hero-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     text-align: center;
     color: #ffffff;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     padding-block: var(--space-9) var(--space-8);
+    box-sizing: border-box;
   }
 
   .home-hero-text h1 {

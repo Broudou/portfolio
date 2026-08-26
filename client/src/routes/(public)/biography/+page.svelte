@@ -44,7 +44,7 @@
   <HeroBackground background={data.biography.background} />
 {/if}
 
-<div class="hero-section container">
+<div class="hero-section container" class:has-background={hasBackground}>
   <div class="hero-wrap">
     <Hero
       fullName={data.biography.fullName}
@@ -89,6 +89,16 @@
      background of its own, unlike `.page` below. */
   .hero-section {
     padding-block: var(--space-8) var(--space-6);
+  }
+
+  /* Fullscreen hero so the background is fully visible before content
+     scrolls into view, matching the haniarani.com-style reveal. */
+  .hero-section.has-background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
   }
 
   .page {
