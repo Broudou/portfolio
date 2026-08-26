@@ -5,6 +5,7 @@
   import ProjectListItem from '$lib/components/content/ProjectListItem.svelte';
   import ArticleListItem from '$lib/components/content/ArticleListItem.svelte';
   import AlbumListItem from '$lib/components/content/AlbumListItem.svelte';
+  import PhotoCarousel from '$lib/components/content/PhotoCarousel.svelte';
   import { resolveSeo } from '$lib/utils/seo.js';
   import type { PageData } from './$types.js';
 
@@ -55,6 +56,14 @@
           <ProjectListItem {project} />
         {/each}
       </div>
+    </section>
+  {/if}
+
+  {#if data.lastAlbum && data.lastAlbumPhotos.length > 0}
+    <section class="container section" aria-label="Last album">
+      <h2 class="section-title">Last Album</h2>
+      <a class="album-title-link" href="/photos/{data.lastAlbum.slug}">{data.lastAlbum.title}</a>
+      <PhotoCarousel photos={data.lastAlbumPhotos} />
     </section>
   {/if}
 
@@ -112,5 +121,20 @@
 
   .list {
     max-width: var(--prose-max-width);
+  }
+
+  .album-title-link {
+    display: block;
+    max-width: var(--prose-max-width);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--font-size-base);
+    transition: color var(--duration-base) var(--easing-standard);
+  }
+
+  .album-title-link:hover,
+  .album-title-link:focus-visible {
+    color: var(--color-accent);
   }
 </style>

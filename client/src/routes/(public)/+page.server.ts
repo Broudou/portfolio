@@ -1,8 +1,9 @@
 import type { PageServerLoad } from './$types.js';
-import type { Album, Article, Project } from '@portfolio/shared';
+import type { Article, Photo, Project } from '@portfolio/shared';
 import { listProjects } from '$lib/api/projects.js';
 import { listArticles } from '$lib/api/articles.js';
 import { listAlbums } from '$lib/api/albums.js';
+import { listPhotosByAlbum } from '$lib/api/photos.js';
 
 const FETCH_LIMIT = 50;
 
@@ -10,6 +11,8 @@ const FETCH_LIMIT = 50;
  * The homepage only ever renders featured projects, featured articles, and
  * featured photo albums, so nothing else is fetched here even if other
  * section types are still configured/enabled in Settings.homepageSections.
+ * Albums are always fetched (regardless of the "photos" section toggle)
+ * since the "Last Album" carousel needs them independently of that section.
  */
 export const load: PageServerLoad = async ({ parent }) => {
   const { settings } = await parent();
@@ -29,10 +32,15 @@ export const load: PageServerLoad = async ({ parent }) => {
     needs('featuredArticles')
       ? listArticles({ limit: FETCH_LIMIT })
       : Promise.resolve({ items: [] as Article[], meta: null }),
-    needs('photos')
-      ? listAlbums({ limit: FETCH_LIMIT })
-      : Promise.resolve({ items: [] as Album[], meta: null }),
+    listAlbums({ limit: FETCH_LIMIT }),
   ]);
+
+  const lastAlbum =
+    [...albumsResult.items].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )[0] ?? null;
+
+  const lastAlbumPhotos = lastAlbum ? await listPhotosByAlbum(lastAlbum.id) : ([] as Photo[]);
 
   return {
     featuredProjects: projectsResult.items
@@ -41,9 +49,11 @@ export const load: PageServerLoad = async ({ parent }) => {
     featuredArticles: articlesResult.items
       .filter((article) => article.featured)
       .slice(0, sectionLimit('featuredArticles', 3)),
-    featuredAlbums: albumsResult.items
-      .filter((album) => album.featured)
-      .slice(0, sectionLimit('photos', 3)),
+    featuredAlbums: needs('photos')
+      ? albumsResult.items.filter((album) => album.featured).slice(0, sectionLimit('photos', 3))
+      : [],
+    lastAlbum,
+    lastAlbumPhotos,
     hasHeroBackground: settings.homeBackground.type !== 'none' && !!settings.homeBackground.media,
   };
 };

@@ -17,8 +17,9 @@
   let { data, form }: Props = $props();
 
   let bioMarkdown = $state(data.biography.bioMarkdown);
-  let avatarId = $state<string | null>(populated(data.biography.avatar)?.id ?? null);
   let saving = $state(false);
+
+  const avatarId = populated(data.biography.avatar)?.id ?? '';
 
   let backgroundType = $state(data.biography.background?.type ?? 'none');
   let backgroundMediaId = $state<string | null>(populated(data.biography.background?.media)?.id ?? null);
@@ -38,23 +39,11 @@
       };
     }}
   >
-    <FormField label="Full name" id="fullName" required error={form?.errors?.fullName?.[0]}>
-      <input id="fullName" name="fullName" type="text" required value={data.biography.fullName} />
-    </FormField>
-
-    <FormField label="Headline" id="headline" required error={form?.errors?.headline?.[0]}>
-      <input id="headline" name="headline" type="text" required value={data.biography.headline} />
-    </FormField>
-
-    <FormField label="Summary" id="summary" hint="A one-sentence summary shown on the homepage hero." required error={form?.errors?.summary?.[0]}>
-      <textarea id="summary" name="summary" rows="2" required>{data.biography.summary}</textarea>
-    </FormField>
-
-    <FormField label="Location" id="location">
-      <input id="location" name="location" type="text" value={data.biography.location ?? ''} />
-    </FormField>
-
-    <MediaPicker id="avatar" label="Avatar" bind:value={avatarId} media={data.media} />
+    <input type="hidden" name="fullName" value={data.biography.fullName} />
+    <input type="hidden" name="headline" value={data.biography.headline} />
+    <input type="hidden" name="summary" value={data.biography.summary} />
+    <input type="hidden" name="location" value={data.biography.location ?? ''} />
+    <input type="hidden" name="avatar" value={avatarId} />
 
     <FormField label="Background type" id="backgroundType" hint="Shown as a hero banner behind the top bar on the biography page.">
       <select id="backgroundType" name="backgroundType" bind:value={backgroundType}>

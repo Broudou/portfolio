@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
-  import Hero from '$lib/components/content/Hero.svelte';
   import HeroBackground from '$lib/components/content/HeroBackground.svelte';
   import MarkdownRenderer from '$lib/components/content/MarkdownRenderer.svelte';
   import { populated } from '$lib/utils/populated.js';
@@ -42,22 +41,8 @@
 
 {#if hasBackground}
   <HeroBackground background={data.biography.background} />
+  <div class="hero-section container"></div>
 {/if}
-
-<div class="hero-section container" class:has-background={hasBackground}>
-  <div class="hero-wrap">
-    <Hero
-      fullName={data.biography.fullName}
-      headline={data.biography.headline}
-      summary={data.biography.summary}
-      {avatar}
-      variant={hasBackground ? 'overlay' : 'default'}
-    />
-    {#if data.biography.location}
-      <p class="location" class:overlay={hasBackground}>{data.biography.location}</p>
-    {/if}
-  </div>
-</div>
 
 <div class="page">
   <article class="container">
@@ -85,18 +70,9 @@
 </div>
 
 <style>
-  /* Sits directly over the fixed background (when active) — no opaque
-     background of its own, unlike `.page` below. */
-  .hero-section {
-    padding-block: var(--space-8) var(--space-6);
-  }
-
-  /* Fullscreen hero so the background is fully visible before content
+  /* Empty spacer so the fixed background is fully visible before content
      scrolls into view, matching the haniarani.com-style reveal. */
-  .hero-section.has-background {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .hero-section {
     min-height: 100vh;
     box-sizing: border-box;
   }
@@ -104,18 +80,6 @@
   .page {
     padding-block: 0 var(--space-9);
     background: var(--color-bg);
-  }
-
-  .location {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-sm);
-    margin: var(--space-2) 0 0;
-  }
-
-  .location.overlay {
-    color: inherit;
-    opacity: 0.9;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   }
 
   .skills {
