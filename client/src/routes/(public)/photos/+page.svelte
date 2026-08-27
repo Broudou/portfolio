@@ -63,7 +63,9 @@
     {:else}
       <div class="list">
         {#each data.albums as album (album.id)}
-          <PhotoAlbumCard {album} />
+          <div class:mobile-only-card={album.id === data.lastAlbum?.id}>
+            <PhotoAlbumCard {album} />
+          </div>
         {/each}
       </div>
       <Pagination meta={data.meta} {buildHref} />
@@ -146,9 +148,25 @@
     gap: var(--space-5);
   }
 
+  .list > div {
+    display: contents;
+  }
+
+  /* The featured album (already shown in the carousel above) is desktop-only
+     hidden as a card; mobile has no full-screen carousel to duplicate it
+     against, so it shows there too. (Specificity note: these need to beat
+     `.list > div` above, hence the repeated `> div`.) */
+  .list > div.mobile-only-card {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     .list {
       grid-template-columns: 1fr;
+    }
+
+    .list > div.mobile-only-card {
+      display: contents;
     }
   }
 </style>

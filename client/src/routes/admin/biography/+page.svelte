@@ -39,11 +39,17 @@
       };
     }}
   >
-    <input type="hidden" name="fullName" value={data.biography.fullName} />
-    <input type="hidden" name="headline" value={data.biography.headline} />
     <input type="hidden" name="summary" value={data.biography.summary} />
     <input type="hidden" name="location" value={data.biography.location ?? ''} />
     <input type="hidden" name="avatar" value={avatarId} />
+
+    <FormField label="Full name" id="fullName" hint="Shown as the hero heading when a background is set below.">
+      <input id="fullName" name="fullName" type="text" value={data.biography.fullName} required />
+    </FormField>
+
+    <FormField label="Headline" id="headline" hint="Shown under the name in the hero.">
+      <input id="headline" name="headline" type="text" value={data.biography.headline} required />
+    </FormField>
 
     <FormField label="Background type" id="backgroundType" hint="Shown as a hero banner behind the top bar on the biography page.">
       <select id="backgroundType" name="backgroundType" bind:value={backgroundType}>

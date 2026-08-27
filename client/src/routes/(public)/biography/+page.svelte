@@ -41,7 +41,10 @@
 
 {#if hasBackground}
   <HeroBackground background={data.biography.background} />
-  <div class="hero-section container"></div>
+  <div class="hero-section container">
+    <h1>{data.biography.fullName}</h1>
+    <p>{data.biography.headline}</p>
+  </div>
 {/if}
 
 <div class="page">
@@ -62,11 +65,28 @@
 </div>
 
 <style>
-  /* Empty spacer so the fixed background is fully visible before content
-     scrolls into view, matching the haniarani.com-style reveal. */
   .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     min-height: 100vh;
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    padding-block: var(--space-9) var(--space-8);
     box-sizing: border-box;
+  }
+
+  .hero-section h1 {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-section p {
+    font-size: var(--font-size-lg);
+    opacity: 0.9;
+    margin: 0;
   }
 
   .page {

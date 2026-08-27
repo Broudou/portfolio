@@ -31,7 +31,13 @@ export const load: PageServerLoad = async ({ url }) => {
 
   const total = gridAlbums.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const albums = gridAlbums.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const pageAlbums = gridAlbums.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  // The desktop grid still excludes the carousel's album (see above), but
+  // mobile shows it as a card too (no full-screen carousel to duplicate it
+  // against there) — so it's included here on page 1 and the page marks
+  // that one card mobile-only via CSS rather than fetching it separately.
+  const albums = page === 1 && lastAlbum ? [lastAlbum, ...pageAlbums] : pageAlbums;
 
   return {
     albums,
