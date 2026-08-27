@@ -119,13 +119,8 @@
     margin-bottom: var(--space-6);
   }
 
-  .list {
-    max-width: var(--prose-max-width);
-  }
-
   .album-title-link {
     display: block;
-    max-width: var(--prose-max-width);
     margin-bottom: var(--space-4);
     color: var(--color-text-secondary);
     text-decoration: none;

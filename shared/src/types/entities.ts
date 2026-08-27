@@ -63,7 +63,6 @@ export interface Biography extends BaseEntity {
   bioMarkdown: string;
   avatar?: Media | string | null;
   location?: string;
-  skills: string[];
   highlights: string[];
   background?: BackgroundMedia;
   seo?: SeoMeta;

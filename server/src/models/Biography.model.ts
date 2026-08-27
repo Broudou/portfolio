@@ -33,7 +33,6 @@ const biographySchema = new Schema(
     bioMarkdown: { type: String, required: true },
     avatar: { type: Schema.Types.ObjectId, ref: 'Media', default: null },
     location: { type: String, trim: true, maxlength: 120 },
-    skills: { type: [String], default: [] },
     highlights: { type: [String], default: [] },
     background: { type: backgroundSchema, default: () => ({}) },
     seo: { type: seoSchema, default: () => ({}) },

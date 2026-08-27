@@ -10,7 +10,6 @@ const DEFAULTS: Partial<BiographyDocument> = {
   headline: 'Software Engineer',
   summary: 'Add a short summary from the admin panel.',
   bioMarkdown: 'Write your biography from the admin panel.',
-  skills: [],
   highlights: [],
   background: { type: 'none', media: null },
 };

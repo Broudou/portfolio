@@ -66,10 +66,6 @@
     <MarkdownEditor id="bioMarkdown" label="Biography (Markdown)" bind:value={bioMarkdown} required />
     <input type="hidden" name="bioMarkdown" value={bioMarkdown} />
 
-    <FormField label="Skills" id="skills" hint="One per line.">
-      <textarea id="skills" name="skills" rows="6">{data.biography.skills.join('\n')}</textarea>
-    </FormField>
-
     <FormField label="Highlights" id="highlights" hint="One per line.">
       <textarea id="highlights" name="highlights" rows="6">{data.biography.highlights.join('\n')}</textarea>
     </FormField>

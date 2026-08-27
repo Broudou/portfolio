@@ -21,7 +21,6 @@ export function personJsonLd(siteUrl: string, biography: Biography, avatarUrl?: 
     url: siteUrl,
     image: avatarUrl,
     address: biography.location ? { '@type': 'PostalAddress', addressLocality: biography.location } : undefined,
-    knowsAbout: biography.skills,
   };
 }
 

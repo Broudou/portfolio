@@ -31,7 +31,6 @@ export const actions: Actions = {
       bioMarkdown: formData.get('bioMarkdown'),
       location: formData.get('location') || undefined,
       avatar: formData.get('avatar') || null,
-      skills: linesToArray(formData.get('skills')),
       highlights: linesToArray(formData.get('highlights')),
       background: {
         type: formData.get('backgroundType') || 'none',

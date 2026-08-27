@@ -46,14 +46,6 @@
 
 <div class="page">
   <article class="container">
-    {#if data.biography.skills.length > 0}
-      <ul class="skills">
-        {#each data.biography.skills as skill (skill)}
-          <li>{skill}</li>
-        {/each}
-      </ul>
-    {/if}
-
     <MarkdownRenderer html={data.bioHtml} />
 
     {#if data.biography.highlights.length > 0}
@@ -80,24 +72,6 @@
   .page {
     padding-block: 0 var(--space-9);
     background: var(--color-bg);
-  }
-
-  .skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    list-style: none;
-    margin: 0 0 var(--space-7);
-    padding: 0;
-  }
-
-  .skills li {
-    background: var(--color-pastel-blue);
-    color: var(--color-text-primary);
-    padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-full);
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
   }
 
   .highlights {
