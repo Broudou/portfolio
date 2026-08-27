@@ -63,7 +63,7 @@
     {:else}
       <div class="list">
         {#each data.albums as album (album.id)}
-          <div class:mobile-only-card={album.id === data.lastAlbum?.id}>
+          <div class:hide-on-mobile-card={album.id === data.lastAlbum?.id}>
             <PhotoAlbumCard {album} />
           </div>
         {/each}
@@ -152,21 +152,17 @@
     display: contents;
   }
 
-  /* The featured album (already shown in the carousel above) is desktop-only
-     hidden as a card; mobile has no full-screen carousel to duplicate it
-     against, so it shows there too. (Specificity note: these need to beat
-     `.list > div` above, hence the repeated `> div`.) */
-  .list > div.mobile-only-card {
-    display: none;
-  }
-
   @media (max-width: 768px) {
     .list {
       grid-template-columns: 1fr;
     }
 
-    .list > div.mobile-only-card {
-      display: contents;
+    /* The featured album is already shown in the carousel above on mobile,
+       so its card is hidden there to avoid duplicating it — other viewports
+       show every album, including this one, as a card. (Specificity note:
+       needs to beat `.list > div` above, hence the repeated `> div`.) */
+    .list > div.hide-on-mobile-card {
+      display: none;
     }
   }
 </style>

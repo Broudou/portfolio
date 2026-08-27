@@ -8,12 +8,11 @@ const PAGE_SIZE = 8;
 export const load: PageServerLoad = async ({ url }) => {
   const page = Number(url.searchParams.get('page') ?? '1');
 
-  // Fetch every album once so picking the most recently created one (for the
-  // carousel) and excluding it from the grid stay consistent across pages.
-  // `order` (the grid's own sort) is manually curated and doesn't track
-  // creation recency, so the excluded album could otherwise land outside
-  // whichever page-sized slice we'd paginate server-side, leaving nothing
-  // for the exclusion to actually remove.
+  // Fetch every album once: the grid is a plain slice of this (order-sorted)
+  // set — every album, including the featured one, appears as a card — and
+  // the same data lets us reliably pick the most recently created album for
+  // the carousel. `order` is manually curated and doesn't track creation
+  // recency, so a smaller paginated query alone couldn't do that reliably.
   const allAlbums = await listAlbums({ limit: 100 });
 
   const lastAlbum =
@@ -23,21 +22,9 @@ export const load: PageServerLoad = async ({ url }) => {
 
   const lastAlbumPhotos = page === 1 && lastAlbum ? await listPhotosByAlbum(lastAlbum.id) : ([] as Photo[]);
 
-  // Avoid showing the featured album twice — once in the carousel, once as a
-  // card — by excluding it before paginating, not after.
-  const gridAlbums = lastAlbum
-    ? allAlbums.items.filter((album) => album.id !== lastAlbum.id)
-    : allAlbums.items;
-
-  const total = gridAlbums.length;
+  const total = allAlbums.items.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const pageAlbums = gridAlbums.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
-  // The desktop grid still excludes the carousel's album (see above), but
-  // mobile shows it as a card too (no full-screen carousel to duplicate it
-  // against there) — so it's included here on page 1 and the page marks
-  // that one card mobile-only via CSS rather than fetching it separately.
-  const albums = page === 1 && lastAlbum ? [lastAlbum, ...pageAlbums] : pageAlbums;
+  const albums = allAlbums.items.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return {
     albums,
