@@ -94,8 +94,13 @@
     background: var(--color-bg);
   }
 
+  /* Fill the section width like the home page's content, rather than
+     capping to the narrower prose reading column. */
+  .page :global(.prose) {
+    max-width: none;
+  }
+
   .highlights {
     margin-top: var(--space-7);
-    max-width: var(--prose-max-width);
   }
 </style>
