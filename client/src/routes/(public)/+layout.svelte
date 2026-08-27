@@ -31,4 +31,8 @@
   {@render children()}
 </main>
 
-<Footer footerText={data.settings.footerText} socialLinks={data.settings.socialLinks} />
+<Footer
+  footerText={data.settings.footerText}
+  socialLinks={data.settings.socialLinks}
+  hasBackground={heroActive}
+/>

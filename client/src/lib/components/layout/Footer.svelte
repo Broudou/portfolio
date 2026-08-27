@@ -4,9 +4,10 @@
   interface Props {
     footerText: string;
     socialLinks: SocialLink[];
+    hasBackground?: boolean;
   }
 
-  let { footerText, socialLinks }: Props = $props();
+  let { footerText, socialLinks, hasBackground = false }: Props = $props();
 
   const PLATFORM_LABEL: Record<string, string> = {
     github: 'GitHub',
@@ -18,7 +19,7 @@
   };
 </script>
 
-<footer class="site-footer">
+<footer class="site-footer" class:has-background={hasBackground}>
   <div class="container inner">
     <p class="footer-text">{footerText}</p>
 
@@ -53,8 +54,12 @@
 
   .footer-text {
     margin: 0;
-    color: var(--color-accent);
+    color: var(--color-text-primary);
     font-size: var(--font-size-sm);
+  }
+
+  .has-background .footer-text {
+    color: #ffffff;
   }
 
   .social-links {
@@ -67,13 +72,18 @@
   }
 
   .social-links a {
-    color: var(--color-accent);
+    color: var(--color-text-primary);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     text-decoration: none;
+    transition: color var(--duration-base) var(--easing-standard);
+  }
+
+  .has-background .social-links a {
+    color: #ffffff;
   }
 
   .social-links a:hover {
-    color: #ffffff;
+    color: var(--color-accent);
   }
 </style>
