@@ -76,16 +76,22 @@
     scroll-snap-type: y mandatory;
   }
 
-  /* Mobile: let the cards scroll into view normally instead of being
-     snap-locked behind a full-screen carousel section. */
+  /* Mobile: the carousel is a normal-sized banner at the top instead of a
+     full-screen section — cards scroll into view right below it, no snap. */
   @media (max-width: 768px) {
     :global(html.photos-snap) {
       scroll-snap-type: none;
     }
 
     .hero-carousel {
+      height: auto !important;
       scroll-snap-align: none;
       scroll-snap-stop: normal;
+    }
+
+    .hero-carousel :global(.carousel) {
+      flex: none;
+      min-height: auto;
     }
 
     .cards-section {

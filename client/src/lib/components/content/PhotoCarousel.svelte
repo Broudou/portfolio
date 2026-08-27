@@ -90,14 +90,30 @@
   }
 
   /* Keeps the 16:9 crop at whatever size fits inside the available box —
-     bound by width on short/wide viewports, by height on tall/narrow ones
-     (mobile portrait included) — rather than stretching to fill it.
+     bound by width on short/wide viewports, by height on tall/narrow ones —
+     rather than stretching to fill it.
      !important: Swiper's own JS measures and sometimes sets an inline height
      on this element — a plain override here can lose to that inline style. */
   .swiper.fill {
     aspect-ratio: 16 / 9 !important;
     width: min(100cqw, calc(100cqh * 16 / 9)) !important;
     height: min(100cqh, calc(100cqw * 9 / 16)) !important;
+  }
+
+  /* Mobile: the section itself is no longer full-screen (see the photos
+     page's own mobile override), so just size like a normal 16:9 banner. */
+  @media (max-width: 768px) {
+    .carousel.fill {
+      display: block;
+      height: auto;
+      overflow: visible;
+      container-type: normal;
+    }
+
+    .swiper.fill {
+      width: 100% !important;
+      height: auto !important;
+    }
   }
 
   :global(.swiper-slide) img {
