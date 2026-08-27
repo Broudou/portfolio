@@ -6,6 +6,7 @@
   import Pagination from '$lib/components/ui/Pagination.svelte';
   import EmptyState from '$lib/components/ui/EmptyState.svelte';
   import { resolveSeo } from '$lib/utils/seo.js';
+  import { pageChrome } from '$lib/stores/pageChrome.svelte.js';
   import type { PageData } from './$types.js';
 
   interface Props {
@@ -26,10 +27,12 @@
 
 <SeoHead title={seo.title} description={seo.description} canonicalUrl={seo.canonicalUrl} ogImageUrl={seo.ogImageUrl} />
 
-<div class="container page">
+<div class="container page" class:has-hero={data.lastAlbum && data.lastAlbumPhotos.length > 0}>
   {#if data.lastAlbum && data.lastAlbumPhotos.length > 0}
-    <a class="last-album-link" href="/photos/{data.lastAlbum.slug}">{data.lastAlbum.title}</a>
-    <PhotoCarousel photos={data.lastAlbumPhotos} />
+    <div class="hero-carousel" style="min-height: calc(100vh - {pageChrome.navHeight}px)">
+      <a class="last-album-link" href="/photos/{data.lastAlbum.slug}">{data.lastAlbum.title}</a>
+      <PhotoCarousel photos={data.lastAlbumPhotos} fill />
+    </div>
   {/if}
 
   {#if data.albums.length === 0}
@@ -49,6 +52,22 @@
     padding-block: var(--space-8) var(--space-9);
   }
 
+  .page.has-hero {
+    padding-top: 0;
+  }
+
+  .hero-carousel {
+    display: flex;
+    flex-direction: column;
+    padding-block: var(--space-6) var(--space-8);
+    box-sizing: border-box;
+  }
+
+  .hero-carousel :global(.carousel) {
+    flex: 1;
+    min-height: 0;
+  }
+
   .last-album-link {
     display: block;
     margin-bottom: var(--space-4);
@@ -61,10 +80,6 @@
   .last-album-link:hover,
   .last-album-link:focus-visible {
     color: var(--color-accent);
-  }
-
-  :global(.last-album-link + .carousel) {
-    margin-bottom: var(--space-8);
   }
 
   .list {

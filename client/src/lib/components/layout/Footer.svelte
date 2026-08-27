@@ -38,9 +38,6 @@
 
 <style>
   .site-footer {
-    /* Opaque so it reads normally once scrolled past a fixed hero
-       background (see HeroBackground.svelte), matching .content-panel. */
-    background: var(--color-bg);
     border-top: 1px solid var(--color-border);
     margin-top: var(--space-9);
   }
@@ -56,7 +53,7 @@
 
   .footer-text {
     margin: 0;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
     font-size: var(--font-size-sm);
   }
 
@@ -70,7 +67,7 @@
   }
 
   .social-links a {
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     text-decoration: none;

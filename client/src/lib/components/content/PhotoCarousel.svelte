@@ -10,9 +10,11 @@
 
   interface Props {
     photos: Photo[];
+    /** Fill the parent's height instead of sizing itself from a 16:9 aspect-ratio. */
+    fill?: boolean;
   }
 
-  let { photos }: Props = $props();
+  let { photos, fill = false }: Props = $props();
 
   const images = $derived(
     photos.map((photo) => populated(photo.image)).filter((image) => image !== null),
@@ -46,8 +48,8 @@
 </script>
 
 {#if images.length > 0}
-  <div class="carousel">
-    <div class="swiper" bind:this={container} aria-label="Photo carousel">
+  <div class="carousel" class:fill>
+    <div class="swiper" class:fill bind:this={container} aria-label="Photo carousel">
       <div class="swiper-wrapper">
         {#each images as image, index (image.id)}
           <div class="swiper-slide">
@@ -70,12 +72,21 @@
 {/if}
 
 <style>
+  .carousel.fill {
+    height: 100%;
+  }
+
   .swiper {
     aspect-ratio: 16 / 9;
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-border);
     overflow: hidden;
     background: var(--color-surface);
+  }
+
+  .swiper.fill {
+    aspect-ratio: unset;
+    height: 100%;
   }
 
   :global(.swiper-slide) img {
