@@ -100,16 +100,6 @@
     height: min(100cqh, calc(100cqw * 9 / 16)) !important;
   }
 
-  /* Mobile: fill the full width instead of shrinking to fit the available
-     height — the photo crops/zooms (overflow hidden by .carousel.fill)
-     rather than letterboxing down to a small centered strip. */
-  @media (max-width: 768px) {
-    .swiper.fill {
-      width: 100% !important;
-      height: auto !important;
-    }
-  }
-
   :global(.swiper-slide) img {
     width: 100%;
     height: 100%;
