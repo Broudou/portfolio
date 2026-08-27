@@ -74,9 +74,11 @@
 <style>
   .carousel.fill {
     display: flex;
+    align-items: center;
     justify-content: center;
     height: 100%;
     overflow: hidden;
+    container-type: size;
   }
 
   .swiper {
@@ -87,16 +89,15 @@
     background: var(--color-surface);
   }
 
-  /* Keeps the 16:9 crop, driven by the available height instead of width —
-     letterboxed (narrower than the section) rather than stretched to fill it.
+  /* Keeps the 16:9 crop at whatever size fits inside the available box —
+     bound by width on short/wide viewports, by height on tall/narrow ones
+     (mobile portrait included) — rather than stretching to fill it.
      !important: Swiper's own JS measures and sometimes sets an inline height
      on this element — a plain override here can lose to that inline style. */
   .swiper.fill {
     aspect-ratio: 16 / 9 !important;
-    width: auto !important;
-    height: 100% !important;
-    max-width: 100% !important;
-    flex-shrink: 1;
+    width: min(100cqw, calc(100cqh * 16 / 9)) !important;
+    height: min(100cqh, calc(100cqw * 9 / 16)) !important;
   }
 
   :global(.swiper-slide) img {
