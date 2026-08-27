@@ -24,13 +24,12 @@
     splide = new Splide(track, {
       type: 'fade',
       rewind: true,
-      heightRatio: 9 / 16,
       arrows: images.length > 1,
       pagination: images.length > 1,
       keyboard: 'global',
       lazyLoad: 'nearby',
     });
-    splide.mount({}, images.length > 1 ? CloudMaskTransition : undefined);
+    splide.mount({}, CloudMaskTransition);
   });
 
   onDestroy(() => {
@@ -68,7 +67,23 @@
     overflow: hidden;
   }
 
+  .splide__track {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+
+  :global(.splide__list) {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
   :global(.splide__slide) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     overflow: hidden;

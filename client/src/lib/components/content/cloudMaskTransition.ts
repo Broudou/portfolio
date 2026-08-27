@@ -58,6 +58,17 @@ export function CloudMaskTransition(Splide: any, Components: any) {
   let activeNext: HTMLElement | undefined;
   let activePrev: HTMLElement | undefined;
 
+  function mount(): void {
+    // Custom transitions opt out of Splide's own slide positioning, so every
+    // slide must be explicitly shown/hidden here instead of relying on the
+    // built-in fade transform stacking.
+    Components.Slides.get().forEach(({ slide, index }: { slide: HTMLElement; index: number }) => {
+      const isActive = index === Splide.index;
+      slide.style.opacity = isActive ? '1' : '0';
+      slide.style.zIndex = isActive ? '1' : '0';
+    });
+  }
+
   function cleanup(): void {
     if (timer) {
       clearTimeout(timer);
@@ -111,6 +122,7 @@ export function CloudMaskTransition(Splide: any, Components: any) {
   }
 
   return {
+    mount,
     start,
     cancel,
   };
