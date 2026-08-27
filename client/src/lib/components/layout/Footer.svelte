@@ -53,7 +53,7 @@
 
   .footer-text {
     margin: 0;
-    color: var(--color-text-primary);
+    color: var(--color-accent);
     font-size: var(--font-size-sm);
   }
 
@@ -67,13 +67,13 @@
   }
 
   .social-links a {
-    color: var(--color-text-primary);
+    color: var(--color-accent);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     text-decoration: none;
   }
 
   .social-links a:hover {
-    color: var(--color-accent);
+    color: #ffffff;
   }
 </style>

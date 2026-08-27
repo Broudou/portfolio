@@ -99,6 +99,10 @@
     .cards-section {
       scroll-snap-align: none;
     }
+
+    .last-album-link {
+      display: block;
+    }
   }
 
   .page {
@@ -129,7 +133,7 @@
   }
 
   .last-album-link {
-    display: block;
+    display: none;
     margin-bottom: var(--space-4);
     color: var(--color-text-secondary);
     text-decoration: none;
