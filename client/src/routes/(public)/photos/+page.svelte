@@ -48,7 +48,10 @@
 
 <div class="container page" class:has-hero={hasHero}>
   {#if hasHero}
-    <div class="hero-carousel" style="min-height: calc(100vh - {pageChrome.navHeight}px)">
+    <div
+      class="hero-carousel"
+      style="height: calc(100vh - {pageChrome.navHeight}px); height: calc(100dvh - {pageChrome.navHeight}px);"
+    >
       <a class="last-album-link" href="/photos/{data.lastAlbum!.slug}">{data.lastAlbum!.title}</a>
       <PhotoCarousel photos={data.lastAlbumPhotos} fill />
     </div>
@@ -86,6 +89,7 @@
     flex-direction: column;
     padding-block: var(--space-6) var(--space-8);
     box-sizing: border-box;
+    overflow: hidden;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
