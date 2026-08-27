@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import type { Photo } from '@portfolio/shared';
   import { populated } from '$lib/utils/populated.js';
+  import { CloudMaskTransition } from './cloudMaskTransition.js';
   import '@splidejs/splide/css/core';
 
   interface Props {
@@ -21,13 +22,15 @@
     if (images.length === 0 || !track) return;
     const { Splide } = await import('@splidejs/splide');
     splide = new Splide(track, {
-      type: images.length > 1 ? 'loop' : 'slide',
+      type: 'fade',
+      rewind: true,
+      heightRatio: 9 / 16,
       arrows: images.length > 1,
       pagination: images.length > 1,
       keyboard: 'global',
       lazyLoad: 'nearby',
     });
-    splide.mount();
+    splide.mount({}, images.length > 1 ? CloudMaskTransition : undefined);
   });
 
   onDestroy(() => {
@@ -66,7 +69,6 @@
   }
 
   :global(.splide__slide) {
-    aspect-ratio: 16 / 9;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     overflow: hidden;
