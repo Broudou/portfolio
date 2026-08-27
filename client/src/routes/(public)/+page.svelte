@@ -4,7 +4,6 @@
   import HeroBackground from '$lib/components/content/HeroBackground.svelte';
   import ProjectListItem from '$lib/components/content/ProjectListItem.svelte';
   import ArticleListItem from '$lib/components/content/ArticleListItem.svelte';
-  import AlbumListItem from '$lib/components/content/AlbumListItem.svelte';
   import PhotoCarousel from '$lib/components/content/PhotoCarousel.svelte';
   import { resolveSeo } from '$lib/utils/seo.js';
   import type { PageData } from './$types.js';
@@ -64,17 +63,6 @@
       <h2 class="section-title">Last Album</h2>
       <a class="album-title-link" href="/photos/{data.lastAlbum.slug}">{data.lastAlbum.title}</a>
       <PhotoCarousel photos={data.lastAlbumPhotos} />
-    </section>
-  {/if}
-
-  {#if data.featuredAlbums.length > 0}
-    <section class="container section" aria-label="Photos">
-      <h2 class="section-title">Photos</h2>
-      <div class="list">
-        {#each data.featuredAlbums as album (album.id)}
-          <AlbumListItem {album} />
-        {/each}
-      </div>
     </section>
   {/if}
 </div>

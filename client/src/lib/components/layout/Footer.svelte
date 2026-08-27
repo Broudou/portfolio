@@ -38,6 +38,9 @@
 
 <style>
   .site-footer {
+    /* Opaque so it reads normally once scrolled past a fixed hero
+       background (see HeroBackground.svelte), matching .content-panel. */
+    background: var(--color-bg);
     border-top: 1px solid var(--color-border);
     margin-top: var(--space-9);
   }

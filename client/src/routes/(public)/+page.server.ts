@@ -9,10 +9,10 @@ const FETCH_LIMIT = 50;
 
 /**
  * The homepage only ever renders featured projects, featured articles, and
- * featured photo albums, so nothing else is fetched here even if other
+ * the last album's carousel, so nothing else is fetched here even if other
  * section types are still configured/enabled in Settings.homepageSections.
- * Albums are always fetched (regardless of the "photos" section toggle)
- * since the "Last Album" carousel needs them independently of that section.
+ * Albums are always fetched (regardless of homepageSections) since the
+ * "Last Album" carousel isn't gated by a section toggle.
  */
 export const load: PageServerLoad = async ({ parent }) => {
   const { settings } = await parent();
@@ -49,9 +49,6 @@ export const load: PageServerLoad = async ({ parent }) => {
     featuredArticles: articlesResult.items
       .filter((article) => article.featured)
       .slice(0, sectionLimit('featuredArticles', 3)),
-    featuredAlbums: needs('photos')
-      ? albumsResult.items.filter((album) => album.featured).slice(0, sectionLimit('photos', 3))
-      : [],
     lastAlbum,
     lastAlbumPhotos,
     hasHeroBackground: settings.homeBackground.type !== 'none' && !!settings.homeBackground.media,

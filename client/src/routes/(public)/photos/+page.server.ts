@@ -23,5 +23,8 @@ export const load: PageServerLoad = async ({ url }) => {
 
   const lastAlbumPhotos = lastAlbum ? await listPhotosByAlbum(lastAlbum.id) : ([] as Photo[]);
 
-  return { albums: result.items, meta: result.meta, lastAlbum, lastAlbumPhotos };
+  // Avoid showing the featured album twice — once in the carousel, once as a card.
+  const albums = lastAlbum ? result.items.filter((album) => album.id !== lastAlbum.id) : result.items;
+
+  return { albums, meta: result.meta, lastAlbum, lastAlbumPhotos };
 };
