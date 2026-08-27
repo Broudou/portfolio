@@ -2,8 +2,11 @@
   import { onMount, onDestroy } from 'svelte';
   import type { Photo } from '@portfolio/shared';
   import { populated } from '$lib/utils/populated.js';
-  import { CloudMaskTransition } from './cloudMaskTransition.js';
-  import '@splidejs/splide/css/core';
+  import type SwiperInstance from 'swiper';
+  import 'swiper/css';
+  import 'swiper/css/effect-fade';
+  import 'swiper/css/navigation';
+  import 'swiper/css/pagination';
 
   interface Props {
     photos: Photo[];
@@ -15,44 +18,53 @@
     photos.map((photo) => populated(photo.image)).filter((image) => image !== null),
   );
 
-  let track: HTMLElement | undefined = $state();
-  let splide: import('@splidejs/splide').Splide | undefined;
+  let container: HTMLElement | undefined = $state();
+  let swiper: SwiperInstance | undefined;
 
   onMount(async () => {
-    if (images.length === 0 || !track) return;
-    const { Splide } = await import('@splidejs/splide');
-    splide = new Splide(track, {
-      type: 'fade',
-      rewind: true,
-      arrows: images.length > 1,
-      pagination: images.length > 1,
-      keyboard: 'global',
-      lazyLoad: 'nearby',
+    if (images.length === 0 || !container) return;
+    const { default: Swiper } = await import('swiper');
+    const { EffectFade, Navigation, Pagination, Keyboard } = await import('swiper/modules');
+
+    swiper = new Swiper(container, {
+      modules: [EffectFade, Navigation, Pagination, Keyboard],
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      loop: images.length > 1,
+      keyboard: { enabled: true },
+      navigation:
+        images.length > 1
+          ? { nextEl: '.carousel-next', prevEl: '.carousel-prev' }
+          : false,
+      pagination: images.length > 1 ? { el: '.carousel-pagination', clickable: true } : false,
     });
-    splide.mount({}, CloudMaskTransition);
   });
 
   onDestroy(() => {
-    splide?.destroy();
+    swiper?.destroy(true, true);
   });
 </script>
 
 {#if images.length > 0}
   <div class="carousel">
-    <div class="splide" bind:this={track} aria-label="Photo carousel">
-      <div class="splide__track">
-        <ul class="splide__list">
-          {#each images as image, index (image.id)}
-            <li class="splide__slide">
-              <img
-                src={image.url}
-                alt={image.altText}
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
-            </li>
-          {/each}
-        </ul>
+    <div class="swiper" bind:this={container} aria-label="Photo carousel">
+      <div class="swiper-wrapper">
+        {#each images as image, index (image.id)}
+          <div class="swiper-slide">
+            <img
+              src={image.url}
+              alt={image.altText}
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+        {/each}
       </div>
+
+      {#if images.length > 1}
+        <button type="button" class="carousel-nav carousel-prev" aria-label="Previous photo">‹</button>
+        <button type="button" class="carousel-nav carousel-next" aria-label="Next photo">›</button>
+        <div class="carousel-pagination"></div>
+      {/if}
     </div>
   </div>
 {/if}
@@ -62,53 +74,69 @@
     max-width: var(--prose-max-width);
   }
 
-  .splide {
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-
-  .splide__track {
-    position: relative;
+  .swiper {
     aspect-ratio: 16 / 9;
-    overflow: hidden;
-  }
-
-  :global(.splide__list) {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  :global(.splide__slide) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
     overflow: hidden;
     background: var(--color-surface);
   }
 
-  :global(.splide__slide) img {
+  :global(.swiper-slide) img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  :global(.splide__arrow) {
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-full);
     background: rgba(0, 0, 0, 0.5);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-xl);
+    line-height: 1;
+    cursor: pointer;
+    transition: background var(--duration-base) var(--easing-standard);
   }
 
-  :global(.splide__arrow:hover) {
+  .carousel-nav:hover,
+  .carousel-nav:focus-visible {
     background: rgba(0, 0, 0, 0.75);
   }
 
-  :global(.splide__arrow svg) {
-    fill: var(--color-text-inverse);
+  .carousel-prev {
+    left: var(--space-3);
   }
 
-  :global(.splide__pagination__page.is-active) {
+  .carousel-next {
+    right: var(--space-3);
+  }
+
+  .carousel-pagination {
+    position: absolute;
+    bottom: var(--space-3);
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  :global(.carousel-pagination .swiper-pagination-bullet) {
+    width: 8px;
+    height: 8px;
+    background: var(--color-border);
+    opacity: 1;
+  }
+
+  :global(.carousel-pagination .swiper-pagination-bullet-active) {
     background: var(--color-accent);
   }
 </style>
