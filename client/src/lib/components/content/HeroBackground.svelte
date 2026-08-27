@@ -21,6 +21,7 @@
     {:else}
       <img class="bg-media" src={media.url} alt="" />
     {/if}
+    <div class="scrim"></div>
   </div>
 {/if}
 
@@ -41,5 +42,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
   }
 </style>
