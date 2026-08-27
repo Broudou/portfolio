@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
   import PhotoAlbumCard from '$lib/components/content/PhotoAlbumCard.svelte';
@@ -19,35 +20,59 @@
   const seo = $derived(
     resolveSeo(siteUrl, '/photos', data.settings.seoDefaults, undefined, 'Photos', 'Photo albums from behind the scenes.'),
   );
+  const hasHero = $derived(!!(data.lastAlbum && data.lastAlbumPhotos.length > 0));
 
   function buildHref(pageNum: number): string {
     return `/photos?page=${pageNum}`;
   }
+
+  // Scroll-snap between the hero carousel and the card grid below. Scoped to
+  // this page's lifetime (rather than global CSS) so no other route gets
+  // snap behavior; `scroll-padding-top` keeps the fixed nav from covering
+  // the top of whichever section is snapped into view.
+  $effect(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    root.classList.toggle('photos-snap', hasHero);
+    root.style.scrollPaddingTop = `${pageChrome.navHeight}px`;
+  });
+
+  onDestroy(() => {
+    if (typeof document === 'undefined') return;
+    document.documentElement.classList.remove('photos-snap');
+    document.documentElement.style.scrollPaddingTop = '';
+  });
 </script>
 
 <SeoHead title={seo.title} description={seo.description} canonicalUrl={seo.canonicalUrl} ogImageUrl={seo.ogImageUrl} />
 
-<div class="container page" class:has-hero={data.lastAlbum && data.lastAlbumPhotos.length > 0}>
-  {#if data.lastAlbum && data.lastAlbumPhotos.length > 0}
+<div class="container page" class:has-hero={hasHero}>
+  {#if hasHero}
     <div class="hero-carousel" style="min-height: calc(100vh - {pageChrome.navHeight}px)">
-      <a class="last-album-link" href="/photos/{data.lastAlbum.slug}">{data.lastAlbum.title}</a>
+      <a class="last-album-link" href="/photos/{data.lastAlbum!.slug}">{data.lastAlbum!.title}</a>
       <PhotoCarousel photos={data.lastAlbumPhotos} fill />
     </div>
   {/if}
 
-  {#if data.albums.length === 0}
-    <EmptyState title="No albums found" description="Check back soon for new photos." />
-  {:else}
-    <div class="list">
-      {#each data.albums as album (album.id)}
-        <PhotoAlbumCard {album} />
-      {/each}
-    </div>
-    <Pagination meta={data.meta} {buildHref} />
-  {/if}
+  <div class="cards-section">
+    {#if data.albums.length === 0}
+      <EmptyState title="No albums found" description="Check back soon for new photos." />
+    {:else}
+      <div class="list">
+        {#each data.albums as album (album.id)}
+          <PhotoAlbumCard {album} />
+        {/each}
+      </div>
+      <Pagination meta={data.meta} {buildHref} />
+    {/if}
+  </div>
 </div>
 
 <style>
+  :global(html.photos-snap) {
+    scroll-snap-type: y mandatory;
+  }
+
   .page {
     padding-block: var(--space-8) var(--space-9);
   }
@@ -61,6 +86,12 @@
     flex-direction: column;
     padding-block: var(--space-6) var(--space-8);
     box-sizing: border-box;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .cards-section {
+    scroll-snap-align: start;
   }
 
   .hero-carousel :global(.carousel) {
