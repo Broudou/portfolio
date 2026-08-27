@@ -76,6 +76,23 @@
     scroll-snap-type: y mandatory;
   }
 
+  /* Mobile: let the cards scroll into view normally instead of being
+     snap-locked behind a full-screen carousel section. */
+  @media (max-width: 768px) {
+    :global(html.photos-snap) {
+      scroll-snap-type: none;
+    }
+
+    .hero-carousel {
+      scroll-snap-align: none;
+      scroll-snap-stop: normal;
+    }
+
+    .cards-section {
+      scroll-snap-align: none;
+    }
+  }
+
   .page {
     padding-block: var(--space-8) var(--space-9);
   }
