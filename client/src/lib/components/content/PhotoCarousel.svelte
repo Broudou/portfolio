@@ -70,10 +70,6 @@
 {/if}
 
 <style>
-  .carousel {
-    max-width: var(--prose-max-width);
-  }
-
   .swiper {
     aspect-ratio: 16 / 9;
     border-radius: var(--radius-lg);

@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import SeoHead from '$lib/components/layout/SeoHead.svelte';
   import PhotoAlbumCard from '$lib/components/content/PhotoAlbumCard.svelte';
+  import PhotoCarousel from '$lib/components/content/PhotoCarousel.svelte';
   import Pagination from '$lib/components/ui/Pagination.svelte';
   import EmptyState from '$lib/components/ui/EmptyState.svelte';
   import { resolveSeo } from '$lib/utils/seo.js';
@@ -26,6 +27,11 @@
 <SeoHead title={seo.title} description={seo.description} canonicalUrl={seo.canonicalUrl} ogImageUrl={seo.ogImageUrl} />
 
 <div class="container page">
+  {#if data.lastAlbum && data.lastAlbumPhotos.length > 0}
+    <a class="last-album-link" href="/photos/{data.lastAlbum.slug}">{data.lastAlbum.title}</a>
+    <PhotoCarousel photos={data.lastAlbumPhotos} />
+  {/if}
+
   {#if data.albums.length === 0}
     <EmptyState title="No albums found" description="Check back soon for new photos." />
   {:else}
@@ -41,6 +47,24 @@
 <style>
   .page {
     padding-block: var(--space-8) var(--space-9);
+  }
+
+  .last-album-link {
+    display: block;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--font-size-base);
+    transition: color var(--duration-base) var(--easing-standard);
+  }
+
+  .last-album-link:hover,
+  .last-album-link:focus-visible {
+    color: var(--color-accent);
+  }
+
+  :global(.last-album-link + .carousel) {
+    margin-bottom: var(--space-8);
   }
 
   .list {
