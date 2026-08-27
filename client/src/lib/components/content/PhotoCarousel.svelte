@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
   import type { Photo } from '@portfolio/shared';
   import { populated } from '$lib/utils/populated.js';
+  import '@splidejs/splide/css/core';
 
   interface Props {
     photos: Photo[];
@@ -8,64 +10,48 @@
 
   let { photos }: Props = $props();
 
-  let currentIndex = $state(0);
-
   const images = $derived(
     photos.map((photo) => populated(photo.image)).filter((image) => image !== null),
   );
 
-  function goTo(index: number) {
-    currentIndex = (index + images.length) % images.length;
-  }
+  let track: HTMLElement | undefined = $state();
+  let splide: import('@splidejs/splide').Splide | undefined;
 
-  function next() {
-    goTo(currentIndex + 1);
-  }
+  onMount(async () => {
+    if (images.length === 0 || !track) return;
+    const { Splide } = await import('@splidejs/splide');
+    splide = new Splide(track, {
+      type: images.length > 1 ? 'loop' : 'slide',
+      arrows: images.length > 1,
+      pagination: images.length > 1,
+      keyboard: 'global',
+      lazyLoad: 'nearby',
+    });
+    splide.mount();
+  });
 
-  function prev() {
-    goTo(currentIndex - 1);
-  }
-
-  function handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'ArrowLeft') prev();
-    else if (event.key === 'ArrowRight') next();
-  }
+  onDestroy(() => {
+    splide?.destroy();
+  });
 </script>
 
 {#if images.length > 0}
   <div class="carousel">
-    <div class="stage" role="group" aria-label="Photo carousel" tabindex="0" onkeydown={handleKeydown}>
-      {#each images as image, index (image.id)}
-        <img
-          src={image.url}
-          alt={image.altText}
-          class="slide"
-          class:active={index === currentIndex}
-          loading={index === 0 ? 'eager' : 'lazy'}
-        />
-      {/each}
-
-      {#if images.length > 1}
-        <button type="button" class="nav prev" onclick={prev} aria-label="Previous photo">‹</button>
-        <button type="button" class="nav next" onclick={next} aria-label="Next photo">›</button>
-      {/if}
-    </div>
-
-    {#if images.length > 1}
-      <div class="dots" role="tablist" aria-label="Photos">
-        {#each images as image, index (image.id)}
-          <button
-            type="button"
-            class="dot"
-            class:active={index === currentIndex}
-            role="tab"
-            aria-selected={index === currentIndex}
-            aria-label={`Show photo ${index + 1}`}
-            onclick={() => goTo(index)}
-          ></button>
-        {/each}
+    <div class="splide" bind:this={track} aria-label="Photo carousel">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {#each images as image, index (image.id)}
+            <li class="splide__slide">
+              <img
+                src={image.url}
+                alt={image.altText}
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            </li>
+          {/each}
+        </ul>
       </div>
-    {/if}
+    </div>
   </div>
 {/if}
 
@@ -74,82 +60,38 @@
     max-width: var(--prose-max-width);
   }
 
-  .stage {
-    position: relative;
-    aspect-ratio: 16 / 9;
+  .splide {
     border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  :global(.splide__slide) {
+    aspect-ratio: 16 / 9;
     border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     overflow: hidden;
     background: var(--color-surface);
   }
 
-  .stage:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
-  }
-
-  .slide {
-    position: absolute;
-    inset: 0;
+  :global(.splide__slide) img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0;
-    transition: opacity var(--duration-base) var(--easing-standard);
   }
 
-  .slide.active {
-    opacity: 1;
-  }
-
-  .nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: var(--radius-full);
+  :global(.splide__arrow) {
     background: rgba(0, 0, 0, 0.5);
-    color: var(--color-text-inverse);
-    font-size: var(--font-size-xl);
-    line-height: 1;
-    cursor: pointer;
-    transition: background var(--duration-base) var(--easing-standard);
   }
 
-  .nav:hover,
-  .nav:focus-visible {
+  :global(.splide__arrow:hover) {
     background: rgba(0, 0, 0, 0.75);
   }
 
-  .nav.prev {
-    left: var(--space-3);
+  :global(.splide__arrow svg) {
+    fill: var(--color-text-inverse);
   }
 
-  .nav.next {
-    right: var(--space-3);
-  }
-
-  .dots {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-2);
-    margin-top: var(--space-4);
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    padding: 0;
-    border: none;
-    border-radius: var(--radius-full);
-    background: var(--color-border);
-    cursor: pointer;
-    transition: background var(--duration-base) var(--easing-standard);
-  }
-
-  .dot.active {
+  :global(.splide__pagination__page.is-active) {
     background: var(--color-accent);
   }
 </style>
