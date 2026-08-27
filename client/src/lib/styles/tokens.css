@@ -89,7 +89,7 @@
   --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Layout */
-  --content-max-width: 1440px;
+  --content-max-width: 1280px;
   --prose-max-width: 720px;
 
   /* Breakpoints, for reference in JS (media queries use literal px) */
