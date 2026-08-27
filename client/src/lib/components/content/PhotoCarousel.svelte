@@ -73,7 +73,9 @@
 
 <style>
   .carousel.fill {
+    position: relative;
     height: 100%;
+    overflow: hidden;
   }
 
   .swiper {
@@ -84,9 +86,14 @@
     background: var(--color-surface);
   }
 
+  /* !important: Swiper's own JS measures and sometimes sets an inline height
+     on this element — a plain override here can lose to that inline style. */
   .swiper.fill {
-    aspect-ratio: unset;
-    height: 100%;
+    aspect-ratio: unset !important;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   :global(.swiper-slide) img {
