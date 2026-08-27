@@ -15,17 +15,17 @@ interface PlaceholderSpec {
 
 /** Pastel/accent pairings pulled from the design token palette (tokens.css). */
 const SPECS: PlaceholderSpec[] = [
-  { key: 'avatar', label: 'John Doe', background: '#F5F3FF', accent: '#C2410C', altText: 'Portrait placeholder for John Doe' },
-  { key: 'og-default', label: 'John Doe', background: '#EFF6FF', accent: '#1C1917', altText: 'Default social share image for the site' },
-  { key: 'project-observability', label: 'Observability Platform', background: '#EFF6FF', accent: '#C2410C', altText: 'Cover image for the Observability Platform project' },
-  { key: 'project-edge-cache', label: 'Edge Cache Router', background: '#F0FDF4', accent: '#C2410C', altText: 'Cover image for the Edge Cache Router project' },
-  { key: 'project-taskflow', label: 'TaskFlow API', background: '#FFFBEB', accent: '#C2410C', altText: 'Cover image for the TaskFlow API project' },
-  { key: 'project-designsystem', label: 'Design System Kit', background: '#FFF1F2', accent: '#C2410C', altText: 'Cover image for the Design System Kit project' },
-  { key: 'project-migrator', label: 'Schema Migrator CLI', background: '#F5F3FF', accent: '#C2410C', altText: 'Cover image for the Schema Migrator CLI project' },
-  { key: 'article-distributed-tracing', label: 'Distributed Tracing', background: '#EFF6FF', accent: '#1C1917', altText: 'Cover image for the article on distributed tracing' },
-  { key: 'article-typed-apis', label: 'Typed APIs', background: '#F0FDF4', accent: '#1C1917', altText: 'Cover image for the article on end-to-end type safety' },
-  { key: 'article-database-indexing', label: 'Database Indexing', background: '#FFFBEB', accent: '#1C1917', altText: 'Cover image for the article on database indexing' },
-  { key: 'article-svelte-ssr', label: 'SvelteKit SSR', background: '#FFF1F2', accent: '#1C1917', altText: 'Cover image for the article on SvelteKit rendering' },
+  { key: 'avatar', label: 'Nadia Voss', background: '#F5F3FF', accent: '#C2410C', altText: 'Portrait placeholder for Nadia Voss' },
+  { key: 'og-default', label: 'Nadia Voss', background: '#EFF6FF', accent: '#1C1917', altText: 'Default social share image for the site' },
+  { key: 'project-tidal-drift', label: 'Tidal Drift', background: '#EFF6FF', accent: '#C2410C', altText: 'Cover image for the Tidal Drift album' },
+  { key: 'project-underneath', label: 'Underneath', background: '#F0FDF4', accent: '#C2410C', altText: 'Cover image for the Underneath sound installation' },
+  { key: 'project-nocturne-sessions', label: 'Nocturne Sessions', background: '#FFFBEB', accent: '#C2410C', altText: 'Cover image for the Nocturne Sessions performance series' },
+  { key: 'project-sediment', label: 'Sediment', background: '#FFF1F2', accent: '#C2410C', altText: 'Cover image for the Sediment painting series' },
+  { key: 'project-low-water', label: 'Low Water', background: '#F5F3FF', accent: '#C2410C', altText: 'Cover image for the Low Water album (in progress)' },
+  { key: 'article-field-recordings', label: 'Field Recordings', background: '#EFF6FF', accent: '#1C1917', altText: 'Cover image for the article on building a field recording palette' },
+  { key: 'article-scoring-for-a-room', label: 'Scoring for a Room', background: '#F0FDF4', accent: '#1C1917', altText: 'Cover image for the article on scoring the Underneath installation' },
+  { key: 'article-nine-unrehearsed-shows', label: 'Nine Unrehearsed Shows', background: '#FFFBEB', accent: '#1C1917', altText: 'Cover image for the article on the Nocturne Sessions performance series' },
+  { key: 'article-sediment-sketchbook', label: 'Sediment Sketchbook', background: '#FFF1F2', accent: '#1C1917', altText: 'Cover image for the sketchbook article on the Sediment series' },
 ];
 
 export interface SeededMedia {

@@ -1,6 +1,6 @@
 /**
  * Generates a small, dependency-free abstract SVG placeholder so the seeded
- * "John Doe" content has visuals without shipping binary sample images in
+ * "Nadia Voss" content has visuals without shipping binary sample images in
  * the repo. Purely decorative — every real deployment replaces these via
  * the admin media library.
  */

@@ -3,16 +3,16 @@ import { Tag, type TagDocument } from '../../models/index.js';
 import { slugify } from '../../services/slug.service.js';
 
 const NAMES = [
-  'TypeScript',
-  'Node.js',
-  'MongoDB',
-  'SvelteKit',
-  'Docker',
-  'Kubernetes',
-  'Testing',
-  'Performance',
-  'Accessibility',
-  'System Design',
+  'Ambient',
+  'Modular Synth',
+  'Field Recording',
+  'Sound Design',
+  'Installation',
+  'Mixed Media',
+  'Painting',
+  'Improvisation',
+  'Collaboration',
+  'Live Performance',
 ];
 
 export async function seedTags(): Promise<Record<string, HydratedDocument<TagDocument>>> {

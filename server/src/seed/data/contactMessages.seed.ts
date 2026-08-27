@@ -5,17 +5,17 @@ export async function seedContactMessages(): Promise<void> {
     {
       name: 'Alicia Reyes',
       email: 'alicia.reyes@example.com',
-      subject: 'Speaking invitation — DevSummit 2026',
+      subject: 'Booking inquiry — Nocturne Sessions guest slot',
       message:
-        "Hi John, we loved your talk on distributed tracing and would love to have you speak at DevSummit this year. Let me know if you'd be interested and I can send more details.",
+        "Hi Nadia, I caught the last Nocturne Sessions show and would love to be considered as a guest for a future date. I play upright bass and prepared piano — let me know if you're booking that far ahead.",
       isRead: true,
     },
     {
       name: 'Marco Lindqvist',
       email: 'marco.l@example.com',
-      subject: 'Question about the Schema Migrator CLI',
+      subject: 'Question about Tidal Drift on vinyl',
       message:
-        "I saw the Schema Migrator project on your portfolio — is the beta open to external testers yet? Would love to try it against our staging MongoDB cluster.",
+        "Loved the Tidal Drift cassette — any plans for a vinyl pressing? Would happily preorder if you open one up.",
       isRead: false,
     },
   ]);

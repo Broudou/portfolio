@@ -43,7 +43,7 @@ const ALL_MODELS = [
 ];
 
 /**
- * Seeds the database with a complete "John Doe" example for every model.
+ * Seeds the database with a complete "Nadia Voss" example for every model.
  * Idempotent by default: if a Setting document already exists, seeding is
  * skipped. Pass `force: true` to wipe every collection and reseed from
  * scratch (used by `npm run seed -- --force`).
@@ -61,7 +61,7 @@ export async function runSeed({ force = false }: { force?: boolean } = {}): Prom
     await Promise.all(ALL_MODELS.map((model) => model.deleteMany({})));
   }
 
-  logger.info('Seeding database with sample "John Doe" content...');
+  logger.info('Seeding database with sample "Nadia Voss" content...');
 
   const admin = await seedAdminUser();
   const { byKey: media } = await seedMedia(admin.id);

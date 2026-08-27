@@ -18,8 +18,8 @@ interface AlbumSpec {
 /** Pastel/accent pairings pulled from the design token palette (tokens.css). */
 const ALBUMS: AlbumSpec[] = [
   {
-    title: 'Trail Running',
-    description: 'Weekend miles on the ridge trails, rain or shine.',
+    title: 'Studio & Rehearsal',
+    description: 'Behind the scenes of the modular rig, the tape deck, and late rehearsal nights.',
     background: '#F0FDF4',
     accent: '#C2410C',
     status: 'published',
@@ -27,8 +27,8 @@ const ALBUMS: AlbumSpec[] = [
     photoCount: 3,
   },
   {
-    title: 'Film Photography',
-    description: '35mm shots from a summer of shooting on expired stock.',
+    title: 'Underneath — Install Documentation',
+    description: 'Rigging speakers and contact mics inside the water tank ahead of opening night.',
     background: '#FFFBEB',
     accent: '#C2410C',
     status: 'published',
@@ -36,8 +36,8 @@ const ALBUMS: AlbumSpec[] = [
     photoCount: 4,
   },
   {
-    title: 'Home Studio Pottery',
-    description: 'Glaze tests and first attempts at the wheel.',
+    title: 'Sediment — Studio Process',
+    description: 'Layering, sanding, and collage stages from the mixed-media panel series.',
     background: '#FFF1F2',
     accent: '#C2410C',
     status: 'draft',

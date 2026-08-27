@@ -3,10 +3,10 @@ import { Category, type CategoryDocument } from '../../models/index.js';
 import { slugify } from '../../services/slug.service.js';
 
 const NAMES = [
-  { name: 'Backend', description: 'APIs, services, and server-side systems.' },
-  { name: 'Frontend', description: 'User interfaces and client-side engineering.' },
-  { name: 'DevOps', description: 'Infrastructure, CI/CD, and operations.' },
-  { name: 'Architecture', description: 'System design and long-term technical decisions.' },
+  { name: 'Music', description: 'Original compositions, releases, and production work.' },
+  { name: 'Sound Installation', description: 'Site-specific and gallery sound works.' },
+  { name: 'Visual Art', description: 'Painting, mixed media, and visual works.' },
+  { name: 'Performance', description: 'Live performance, exhibitions, and collaborative shows.' },
 ];
 
 export async function seedCategories(): Promise<Record<string, HydratedDocument<CategoryDocument>>> {

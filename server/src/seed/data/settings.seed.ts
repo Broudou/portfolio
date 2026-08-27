@@ -7,23 +7,22 @@ interface SeedContext {
 export async function seedSettings({ ogImageId }: SeedContext): Promise<void> {
   await Setting.create({
     singletonKey: 'main',
-    siteTitle: 'John Doe',
-    tagline: 'Senior Software Engineer — Distributed Systems & Developer Platforms',
-    footerText: `© ${new Date().getFullYear()} John Doe. Built with SvelteKit and Express.`,
-    contactRecipientEmail: 'john.doe@example.com',
+    siteTitle: 'Nadia Voss',
+    tagline: 'Composer & Multidisciplinary Artist — Sound, Installation & Painting',
+    footerText: `© ${new Date().getFullYear()} Nadia Voss. Built with SvelteKit and Express.`,
+    contactRecipientEmail: 'nadia.voss@example.com',
     socialLinks: [
-      { platform: 'github', url: 'https://github.com/johndoe' },
-      { platform: 'linkedin', url: 'https://linkedin.com/in/johndoe' },
-      { platform: 'x', url: 'https://x.com/johndoe' },
+      { platform: 'x', url: 'https://x.com/nadiavoss' },
+      { platform: 'mastodon', url: 'https://mastodon.social/@nadiavoss' },
       { platform: 'rss', url: '/articles/rss.xml' },
-      { platform: 'email', url: 'mailto:john.doe@example.com' },
+      { platform: 'email', url: 'mailto:nadia.voss@example.com' },
     ],
     seoDefaults: {
-      title: 'John Doe — Senior Software Engineer',
+      title: 'Nadia Voss — Composer & Multidisciplinary Artist',
       description:
-        'Personal showcase of John Doe: projects, technical articles, and photo albums.',
+        'Personal showcase of Nadia Voss: music, sound installations, visual art, and writing on process.',
       ogImage: ogImageId,
-      twitterHandle: '@johndoe',
+      twitterHandle: '@nadiavoss',
     },
     homepageSections: [
       { type: 'featuredProjects', enabled: true, order: 0, limit: 3 },

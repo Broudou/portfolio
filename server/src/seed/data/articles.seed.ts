@@ -16,170 +16,144 @@ export async function seedArticles(ctx: SeedContext): Promise<void> {
 
   const articles = [
     {
-      title: 'Distributed Tracing Without the Ceremony',
+      title: 'Building a Palette of Field Recordings',
       excerpt:
-        'You do not need a six-month platform project to get useful traces. Here is the smallest setup that pays for itself in the first incident.',
-      contentMarkdown: `Most teams delay distributed tracing because it sounds like a platform
-project: a collector cluster, a storage backend, a query UI, a rollout plan.
-You can get 80% of the value with a fraction of that.
+        'You do not need a studio full of gear to start an ambient record. Here is how two winters of coastal recordings became the raw material for an album.',
+      contentMarkdown: `Most people picture a laptop and a synth when they think about starting an
+ambient record. Mine started with a pair of hydrophones, a shotgun mic, and a
+lot of cold mornings on the coast.
 
-## Start with propagation, not storage
+## Record more than you think you need
 
-The highest-leverage first step is making sure a trace ID survives every hop.
-If you only do one thing, do this:
+For every minute that ended up on the record, I probably recorded fifteen
+that didn't. Tide changes, wind direction, and the state of the harbor all
+change what a location sounds like hour to hour — you can't know in advance
+which take will have the texture you actually want.
 
-\`\`\`ts
-app.use((req, res, next) => {
-  req.traceId = req.headers['x-trace-id'] ?? crypto.randomUUID();
-  res.setHeader('x-trace-id', req.traceId);
-  next();
-});
-\`\`\`
+## Catalog while it's still fresh
 
-Propagate that header on every outbound call your service makes, and log it
-on every line. You now have a free-text way to grep "everything that happened
-for this request" across services, long before you've stood up a real
-tracing backend.
+I log every recording the same day: location, weather, time of day, and one
+line on what stood out. Months later, scrolling through a folder of
+identically named .wav files, that one line is the difference between finding
+the right texture in five minutes and re-listening to four hours of audio.
 
-## Add spans where debugging actually hurts
+## Let the source material lead
 
-Rather than instrumenting everything, instrument the boundaries that have
-burned you before: outbound HTTP calls, database queries over some latency
-threshold, and queue publish/consume.
+The instinct is to treat field recordings as texture under a "real"
+composition. The tracks that ended up feeling most alive were the ones where
+I let the recording's own rhythm and pitch content suggest the melodic
+material, instead of the other way around.
 
-\`\`\`bash
-# a trace ID turns "check five services' logs" into one query
-grep "trace_id=4c9f..." /var/log/*/app.log
-\`\`\`
+## When to stop collecting
 
-## When to graduate to a real backend
-
-Once grep-based correlation starts to hurt — too many services, too much
-volume — that's your signal to invest in OpenTelemetry and a proper backend.
-Not before. The propagation habit you built in week one is exactly what makes
-that later migration painless: every span already carries the right context.`,
-      category: categories.Backend.id,
-      tagNames: ['Node.js', 'System Design', 'Performance'],
-      coverImage: media['article-distributed-tracing'].id,
+At some point more recordings stopped adding new information — I was just
+re-recording the same handful of textures with worse weather. That was the
+signal to move from gathering into arranging.`,
+      category: categories.Music.id,
+      tagNames: ['Field Recording', 'Ambient'],
+      coverImage: media['article-field-recordings'].id,
       status: 'published' as const,
       featured: true,
       publishedAt: new Date('2025-09-12'),
     },
     {
-      title: 'End-to-End Type Safety Without a Monorepo Headache',
+      title: 'Scoring for a Room That Talks Back',
       excerpt:
-        'Sharing types between an Express API and a SvelteKit client does not require a heavyweight codegen pipeline.',
-      contentMarkdown: `A common objection to "just share your types" is that it implies a
-complicated build pipeline. It does not have to.
+        'Designing sound for a 12-meter concrete water tank meant writing with a nine-second reverb tail as a collaborator, not an obstacle.',
+      contentMarkdown: `When I got the brief for Underneath, the first site visit mattered more than
+any amount of studio time afterward. The tank's reverb tail is close to nine
+seconds — long enough that a piece written for a normal room falls apart
+completely once it's inside.
 
-## Ship source, not a build artifact
+## Test on site, early
 
-If your shared package is plain TypeScript and your bundlers (Vite, esbuild)
-already handle TypeScript, you don't need a compile step for the shared
-package at all:
+Anything that sounded clean and detailed on studio monitors turned into an
+indistinct wash inside the tank. I brought a portable rig out for three test
+sessions before writing a single "final" sound, just to build intuition for
+how sparse the material needed to be.
 
-\`\`\`json
-{
-  "name": "@app/shared",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts"
-}
+\`\`\`
+[contact mic] -> [envelope follower] -> [grain density] -> [4ch spatializer]
 \`\`\`
 
-Both the client and server import straight from source. There is no
-dist/ to go stale, no "did you rebuild shared?" step in your onboarding docs.
+## Sparse is a feature, not a compromise
 
-## Validate once, reuse everywhere
+Once I stopped trying to out-detail the room and instead used single,
+widely-spaced events, the space did most of the work. A single struck object
+would bloom into something the tank itself effectively composed.
 
-Pairing this with zod gets you both compile-time types and runtime validation
-from a single definition:
+## The visitor is part of the system
 
-\`\`\`ts
-export const createArticleSchema = z.object({
-  title: z.string().min(1).max(200),
-  status: z.enum(['draft', 'published']),
-});
-export type CreateArticleInput = z.infer<typeof createArticleSchema>;
-\`\`\`
-
-The server uses the schema to validate incoming requests; the client uses the
-inferred type to build type-checked forms against the exact same contract.
-
-## The payoff
-
-When a field is renamed, TypeScript breaks the build everywhere it's used —
-client and server — instead of failing silently at runtime three weeks later.`,
-      category: categories.Architecture.id,
-      tagNames: ['TypeScript', 'SvelteKit', 'Node.js'],
-      coverImage: media['article-typed-apis'].id,
+Footstep vibration through the floor fed the patch in real time, so no two
+visits sounded quite the same. That unpredictability was the whole point —
+a fixed stereo mix would have fought the space instead of using it.`,
+      category: categories['Sound Installation'].id,
+      tagNames: ['Installation', 'Sound Design'],
+      coverImage: media['article-scoring-for-a-room'].id,
       status: 'published' as const,
       featured: true,
       publishedAt: new Date('2025-11-03'),
     },
     {
-      title: 'The Index You Forgot Costs More Than the Query You Optimized',
+      title: 'What Nine Unrehearsed Shows Taught Me About Listening',
       excerpt:
-        'A field guide to reading MongoDB explain() output and catching the collection scans hiding in plain sight.',
-      contentMarkdown: `It's easy to spend an afternoon shaving milliseconds off a hot query while a
-much simpler win — a missing index — sits unnoticed on a less-frequently-hit
-endpoint that's quietly doing a full collection scan under load.
+        'Nine months into a no-rehearsal performance series, the lesson has had less to do with playing and more to do with getting out of the way.',
+      contentMarkdown: `Nocturne Sessions started as an experiment: invite a musician I'd never
+played with, skip rehearsal entirely, and improvise a full set live. Nine
+sessions in, the format has taught me more about listening than about
+playing.
 
-## Read explain() like a checklist
+## The first ten minutes are the hardest
 
-\`\`\`js
-db.articles.find({ status: 'published', category: catId }).explain('executionStats')
-\`\`\`
+Every session opens tentative — both of us testing for space, half-expecting
+to step on each other. The sets that turned out best were the ones where I
+resisted the urge to fill that tentative silence with material and let it run
+a beat longer than felt comfortable.
 
-Look for \`COLLSCAN\` in \`winningPlan\`. If you see it on a query that runs on
-every page load, that's your first fix — usually before anything fancier.
+## Plan the shape, not the notes
 
-## Compound indexes follow query shape, not intuition
+We agree on a rough arc beforehand — where it opens, where it might build,
+roughly how long — but never specific parts. That loose scaffolding is enough
+to keep a 40-minute improvisation from wandering, without dictating what
+either of us plays.
 
-An index on \`{ status: 1, publishedAt: -1 }\` serves "published articles sorted
-by date" efficiently; an index on \`{ publishedAt: -1, status: 1 }\` mostly
-does not, because MongoDB can't use the sort-friendly prefix once the
-equality filter isn't the leading field.
+## Some nights just don't land, and that's the deal
 
-## A five-minute audit worth doing quarterly
-
-List your top ten most-called endpoints, run \`explain()\` on their underlying
-queries, and check for \`COLLSCAN\` or examined-to-returned ratios far above 1.
-It consistently finds more performance headroom than micro-optimizing
-application code.`,
-      category: categories.Backend.id,
-      tagNames: ['MongoDB', 'Performance'],
-      coverImage: media['article-database-indexing'].id,
+Not every session is a keeper. Publishing a quarterly tape instead of every
+recording means the format can absorb an off night without either of us
+feeling like we need to salvage it live.`,
+      category: categories.Performance.id,
+      tagNames: ['Improvisation', 'Collaboration'],
+      coverImage: media['article-nine-unrehearsed-shows'].id,
       status: 'published' as const,
       featured: false,
       publishedAt: new Date('2026-01-20'),
     },
     {
-      title: 'Notes on Moving a Content Site to SvelteKit SSR (Draft)',
+      title: 'Sketchbook: Starting the Sediment Series (Draft)',
       excerpt:
-        'Early notes from an in-progress migration — what has been straightforward, and what has not.',
-      contentMarkdown: `This is a working draft I'm using to track decisions while migrating a
-content-heavy site to SvelteKit with server-side rendering.
+        'Early notes on a new mixed-media painting series, written while the work is still taking shape.',
+      contentMarkdown: `Working notes while the Sediment panels are still in progress — mostly so I
+remember why I made certain decisions once the series is finished and the
+early reasoning has blurred.
 
-## What's been easy
+## What's working
 
-- Per-route data loading via \`+page.server.ts\` mapped cleanly onto our
-  existing REST API.
-- The auth-guard pattern (server \`load\` redirecting unauthenticated users)
-  removed an entire class of "flash of protected content" bugs we had with
-  our previous client-only guard.
+- Sanding back each layer before adding the next keeps earlier marks visible
+  without it reading as muddy
+- Torn paper collaged into the wet ground holds pigment differently than the
+  panel itself, which is giving some useful unplanned texture
 
 ## Open questions
 
-- Where should Markdown rendering live — at request time in \`+page.server.ts\`,
-  or precomputed at publish time? Leaning toward request-time with caching
-  headers for now.
-- Image pipeline: still deciding between a build-time responsive-image
-  plugin and an on-request resizing service.
+- Still deciding whether the larger panels (100x140cm) need a different
+  layering rhythm than the small studies, or whether that's overthinking it
+- Considering sound as a companion piece for the eventual show — unresolved
 
-More to come once the migration is further along.`,
-      category: categories.Frontend.id,
-      tagNames: ['SvelteKit', 'Performance'],
-      coverImage: media['article-svelte-ssr'].id,
+More once there's enough distance from the work to judge it properly.`,
+      category: categories['Visual Art'].id,
+      tagNames: ['Painting', 'Mixed Media'],
+      coverImage: media['article-sediment-sketchbook'].id,
       status: 'draft' as const,
       featured: false,
       publishedAt: null,
