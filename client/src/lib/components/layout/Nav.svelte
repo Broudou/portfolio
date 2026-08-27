@@ -11,9 +11,23 @@
   let { items, currentPath, hasBackground = false }: Props = $props();
   let menuOpen = $state(false);
   let headerHeight = $state(0);
+  let scrolledPastHero = $state(false);
 
   $effect(() => {
     pageChrome.setNavHeight(headerHeight);
+  });
+
+  function updateScrolledPastHero() {
+    scrolledPastHero = window.scrollY >= window.innerHeight - headerHeight;
+  }
+
+  $effect(() => {
+    // Recheck whenever the route or header height changes (e.g. navigating
+    // to/from a hero page resets scroll position; header height can change
+    // between mobile/desktop nav layouts).
+    currentPath;
+    headerHeight;
+    updateScrolledPastHero();
   });
 
   function isActive(path: string): boolean {
@@ -30,9 +44,13 @@
   }
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
+<svelte:window onkeydown={handleKeydown} onscroll={updateScrolledPastHero} />
 
-<header class="site-header" class:transparent={hasBackground} bind:clientHeight={headerHeight}>
+<header
+  class="site-header"
+  class:transparent={hasBackground && !scrolledPastHero}
+  bind:clientHeight={headerHeight}
+>
   <div class="container bar">
     <button
       class="menu-toggle"
